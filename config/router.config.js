@@ -271,13 +271,13 @@ export default [
       { path: '/', redirect: '/book/manage' },
       {
         path: '/book',
-        name: '图书管理',
-        icon: 'book',
+        name: 'book',
+        icon: 'dashboard',
         routes: [
           {
             path: '/book/manage',
-            name: '查看图书',
-            component: './Dashboard/Analysis',
+            name: 'bookManage',
+            component: './BookManage',
           },
         ],
       },
