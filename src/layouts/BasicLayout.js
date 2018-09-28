@@ -25,9 +25,9 @@ function formatter(data, parentPath = '', parentAuthority, parentName) {
   return data.map(item => {
     let locale = 'menu';
     if (parentName && item.name) {
-      locale = `${parentName}.${item.name}`;
+      locale = `${item.name}`;
     } else if (item.name) {
-      locale = `menu.${item.name}`;
+      locale = `${item.name}`;
     } else if (parentName) {
       locale = parentName;
     }

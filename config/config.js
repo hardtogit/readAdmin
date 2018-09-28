@@ -6,6 +6,8 @@ import defaultSettings from '../src/defaultSettings';
 
 export default {
   // add for transfer to umi
+  history: 'hash',
+  publicPath: '/static/dist/',
   plugins: [
     [
       'umi-plugin-react',
@@ -15,7 +17,7 @@ export default {
           hmr: true,
         },
         locale: {
-          enable: true, // default false
+          enable: false, // default false
           default: 'zh-CN', // default zh-CN
           baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
         },
