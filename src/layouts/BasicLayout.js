@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout ,Modal} from 'antd';
+import * as routerRedux from 'react-router-redux';
 import DocumentTitle from 'react-document-title';
 import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
@@ -78,19 +79,24 @@ class BasicLayout extends React.PureComponent {
     this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
     this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual);
+
     window.apiconn.response_received_handler = function(jo){
-      props.dispatch({
-        type: 'global/onResponse',
-        payload: jo,
-      });
-
-      if (jo.ustr != null && jo.ustr !== "" && jo.uerr !== "ERR_CONNECTION_EXCEPTION") alert(jo.ustr);
-
+      if (jo.ustr != null && jo.ustr !== "" && jo.uerr !== "ERR_CONNECTION_EXCEPTION"){
+        Modal.confirm({title:jo.ustr})
+      }else{
+        props.dispatch({
+          type: 'global/onResponse',
+          payload: jo,
+        });
+      }
+      if(!jo.ustr&&jo.obj === "person"&&jo.act === "login"){
+        props.dispatch(routerRedux.push('/goods/manage'));
+      }
       if (jo.obj === "person" && jo.act === "login" && jo.user_info && jo.server_info) {
-        // goto_view("i001");
+        // props.dispatch(routerRedux.push('/'));
       }
       if (jo.obj === "person" && jo.act === "logout") {
-        // goto_view("main");
+        props.dispatch(routerRedux.push('/user/login'));
         return;
       }
 
@@ -101,7 +107,7 @@ class BasicLayout extends React.PureComponent {
     };
     window.apiconn.wsUri = "ws://116.62.164.251:51717/yyqq";
     window.apiconn.connect();
-    window.apiconn.loginx({account:'admin',password:'1',xtype:'admin'})
+    // window.apiconn.loginx({account:'admin',password:'1',xtype:'admin'})
 
   }
 
@@ -111,7 +117,10 @@ class BasicLayout extends React.PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch}=this.props;
+    if(!sessionStorage.getItem('credential_data')){
+      dispatch(routerRedux.push('/user/login'));
+    };
     dispatch({
       type: 'user/fetchCurrent',
     });

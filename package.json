@@ -16,7 +16,7 @@
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint src",
-    "eslint": "eslint src",
+    "eslint": "eslint src/e2e",
     "test": "umi test",
     "generate-mock": "node ./scripts/generateMock.js",
     "test:component": "umi test ./src/components",

@@ -1,4 +1,5 @@
 import { queryNotices } from '@/services/api';
+import {message} from 'antd'
 
 export default {
   namespace: 'global',
@@ -9,9 +10,32 @@ export default {
   },
 
   effects: {
-    *onReseponse({ payload }, { put }){
+    *onResponse({ payload }, { put }){
+      console.log(payload);
+      switch (payload.act) {
+        case "classifylist":
+          yield put({
+          type:'discountCouponManage/classifylist',
+          payload
+        });
+          break;
+        case 'couponlist':
+          yield put({
+            type:'discountCouponManage/couponlist',
+            payload
+          });
+          break;
+        case "couponadd":
+          message.success('优惠卷新增成功')
+        default:
+          break
+      }
+      if(payload.act==="classifylist" ){
+
+      }
+
       yield put({
-          type:'infoData/dealResponse',
+          type:'discountCouponManage/receiveList',
            payload
       })
     },

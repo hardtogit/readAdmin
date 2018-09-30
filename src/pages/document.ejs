@@ -14,12 +14,8 @@
     apiconn.client_info.clienttype = "web";
     apiconn.state_changed_handler = function() {
       console.log("state: " + apiconn.from_state + " => " + apiconn.conn_state);
-
       if(apiconn.conn_state == "IN_SESSION") {
-
-        sessionStorage.setItem("login_name", apiconn.login_name);
-        sessionStorage.setItem("login_passwd", apiconn.login_passwd);
-
+        sessionStorage.setItem("credential_data", JSON.stringify(apiconn.credential_data));
       } else if(apiconn.conn_state == "LOGIN_SCREEN_ENABLED") {
 
         // auto re login after page refresh
@@ -34,16 +30,16 @@
           if(cred !== "") cred_obj = JSON.parse(cred);
 
           if(login_name != "" && login_name != null) {
-            // apiconn.login(login_name, login_passwd);
+            apiconn.login(login_name, login_passwd);
 
           } else if(cred_obj != null) {
             apiconn.loginx(cred_obj);
 
           } else {}
         }
-
       }
     };
+
   </script>
 </head>
 <body>
