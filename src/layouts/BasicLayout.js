@@ -78,6 +78,31 @@ class BasicLayout extends React.PureComponent {
     this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
     this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual);
+    window.apiconn.response_received_handler = function(jo){
+      props.dispatch({
+        type: 'global/onResponse',
+        payload: jo,
+      });
+
+      if (jo.ustr != null && jo.ustr !== "" && jo.uerr !== "ERR_CONNECTION_EXCEPTION") alert(jo.ustr);
+
+      if (jo.obj === "person" && jo.act === "login" && jo.user_info && jo.server_info) {
+        // goto_view("i001");
+      }
+      if (jo.obj === "person" && jo.act === "logout") {
+        // goto_view("main");
+        return;
+      }
+
+      // $scope.$on("RESPONSE_RECEIVED_HANDLER", function(event, jo) {}
+      if (jo.obj === "sdk" && jo.act === "switchreq") {
+        // return goto_view(jo.ixxx);
+      }
+    };
+    window.apiconn.wsUri = "ws://116.62.164.251:51717/yyqq";
+    window.apiconn.connect();
+    window.apiconn.loginx({account:'admin',password:'1',xtype:'admin'})
+
   }
 
   state = {
