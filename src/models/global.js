@@ -9,8 +9,11 @@ export default {
   },
 
   effects: {
-    *onReseponse({ payload }, { put, select }){
-      console.log(payload)
+    *onReseponse({ payload }, { put }){
+      yield put({
+          type:'infoData/dealResponse',
+           payload
+      })
     },
     *fetchNotices(_, { call, put }) {
       const data = yield call(queryNotices);

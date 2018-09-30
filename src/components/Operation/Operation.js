@@ -22,14 +22,14 @@ class Operation extends React.Component {
   }
 
   render() {
-    const { disable, className = '' } = this.props;
+    const { disable, className = '', children } = this.props;
     let style = { color: '#1890ff', cursor: 'pointer' };
     if (disable) {
       style = { color: '#ddd', cursor: 'not-allowed' };
     }
     return (
       <span style={style} onClick={this.handleClick} className={className}>
-        {this.props.children}
+        {children}
       </span>
     );
   }
