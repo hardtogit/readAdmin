@@ -73,7 +73,7 @@ class LoginPage extends Component {
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
-          <Button type='primary' onClick={this.handleSubmit}>登录</Button>
+          <Button type='primary' style={{width:'100%'}} onClick={this.handleSubmit}>登录</Button>
         </Login>
       </div>
     );

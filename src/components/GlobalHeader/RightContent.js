@@ -71,7 +71,9 @@ export default class GlobalHeaderRight extends PureComponent {
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{sessionStorage.getItem('credential_data')&&
+              JSON.parse(sessionStorage.getItem('credential_data')).account}
+              </span>
             </span>
           </Dropdown>
         ) : (

@@ -19,8 +19,9 @@ class Index extends React.Component{
 
   render(){
     const {onCancel,form:{getFieldDecorator},onOk,classifylist,form,callBack,couponread}=this.props;
+    const {_id}=couponread;
     const modalProps={
-      title:'添加优惠卷',
+      title:_id&&'修改优惠券'||'添加优惠卷',
       visible:true,
       width:620,
       onCancel,

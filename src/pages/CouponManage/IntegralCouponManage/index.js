@@ -8,6 +8,7 @@ import Operation from '@/components/Operation/Operation';
 // import FormUtils from '@/utils/form';
 import TableUtils from '@/utils/table'
 import CouponModal from './couponModal'
+import { Modal } from 'antd/lib/index';
 
 // const {createFields}=FormUtils;
 const {createColumns}=TableUtils;
@@ -62,7 +63,23 @@ class Index extends React.Component {
           <span className="ant-divider" />
           <Operation
             disable={record.id === -1}
-            onClick={() => this.handleAccountModal(record, 'detail')}
+            onClick={() => {
+              const {_id}=record;
+              Modal.confirm({
+                title:'确定删除该条数据？',
+                onOk:()=>{
+                  window.apiconn.send_obj({
+                    obj:"admin",
+                    act:"goldmoldel",
+                    id:_id
+                  });
+                  getList(1,10);
+                }
+              })
+
+
+
+            }}
           >删除
           </Operation>
         </div>)}];

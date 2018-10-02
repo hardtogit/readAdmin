@@ -19,8 +19,9 @@ class Index extends React.Component{
 
   render(){
     const {onCancel,form:{getFieldDecorator},onOk,form,callBack,goldmolread}=this.props;
+    const {_id}=goldmolread;
     const modalProps={
-      title:'添加优惠卷',
+      title:_id&&'修改积分卡'||'添加积分卡',
       visible:true,
       width:620,
       onCancel,
@@ -63,8 +64,10 @@ class Index extends React.Component{
             >
               {getFieldDecorator('value', {
                 initialValue: goldmolread&&goldmolread.value,
-                rules: [],
-              })(
+                rules: [{
+                  required: true,
+                  message: '积分必须填写'
+              }],})(
                 <InputNumber style={{width:'100%'}} min={0} precision={0} />
               )}
             </FormItem>
@@ -76,7 +79,10 @@ class Index extends React.Component{
             >
               {getFieldDecorator('status', {
                 initialValue: goldmolread&&goldmolread.status,
-                rules: [],
+                rules: [{
+                  required: true,
+                  message: '状态必须填写'
+                }],
               })(
                 <Select>
                   <Option value="是">是</Option>

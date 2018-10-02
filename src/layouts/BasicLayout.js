@@ -119,6 +119,7 @@ class BasicLayout extends React.PureComponent {
   componentDidMount() {
     const {dispatch}=this.props;
     if(!sessionStorage.getItem('credential_data')){
+      sessionStorage.removeItem('credential_data');
       dispatch(routerRedux.push('/user/login'));
     };
     dispatch({
