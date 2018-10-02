@@ -18,7 +18,7 @@ class Index extends React.Component{
     }}
 
   render(){
-    const {onCancel,form:{getFieldDecorator},onOk,classifylist,form}=this.props;
+    const {onCancel,form:{getFieldDecorator},onOk,classifylist,form,callBack,couponread}=this.props;
     const modalProps={
       title:'添加优惠卷',
       visible:true,
@@ -27,7 +27,11 @@ class Index extends React.Component{
       onOk:()=>{
         form.validateFields((err, values) => {
             if (!err) {
-              onOk({...values})
+              onOk({...values});
+              if(callBack){
+                callBack(1,100000)
+              }
+              onCancel()
             }
           }
         );
@@ -42,7 +46,7 @@ class Index extends React.Component{
               label="名称"
             >
               {getFieldDecorator('name', {
-                  initialValue: '',
+                  initialValue: couponread&&couponread.name,
                   rules: [{
                     required: true,
                     message: '名称必须填写'
@@ -58,7 +62,7 @@ class Index extends React.Component{
               label="立减金额"
             >
               {getFieldDecorator('reduce', {
-              initialValue: '',
+              initialValue: couponread&&couponread.reduce,
               rules: [{
                 required: true,
                 message: '请输入立减金额'
@@ -72,11 +76,13 @@ class Index extends React.Component{
             <FormItem
               {...layout}
               label="最低限额"
-              extra="如不填，则没有限制"
             >
               {getFieldDecorator('limit', {
-              initialValue: '',
-              rules: [],
+              initialValue: couponread&&couponread.limit,
+              rules: [{
+                required: true,
+                message: '请输入最低限额'
+              }],
             })(
               <InputNumberGroup min={0} precision={0} addonAfter="元" />
             )}
@@ -86,11 +92,13 @@ class Index extends React.Component{
             <FormItem
               {...layout}
               label="有效期"
-              extra="如不填，则没有限制"
             >
               {getFieldDecorator('days', {
-                initialValue: '',
-                rules: [],
+                initialValue: couponread&&couponread.days,
+                rules: [{
+                  required: true,
+                  message: '请输入有效期'
+                }],
               })(
                 <InputNumberGroup min={0} precision={0} addonAfter="天" />
               )}
@@ -102,8 +110,11 @@ class Index extends React.Component{
               label="积分"
             >
               {getFieldDecorator('gold', {
-                initialValue: '',
-                rules: [],
+                initialValue: couponread&&couponread.gold,
+                rules: [{
+                  required: true,
+                  message: '请输入兑换积分'
+                }],
               })(
                 <InputNumber style={{width:'100%'}} min={0} precision={0} />
               )}
@@ -115,8 +126,11 @@ class Index extends React.Component{
               label="是否有效"
             >
               {getFieldDecorator('status', {
-                initialValue: '是',
-                rules: [],
+                initialValue: couponread&&couponread.status,
+                rules: [{
+                  required: true,
+                  message: '请选择是否有效'
+                }],
               })(
                 <Select>
                   <Option value="是">是</Option>
@@ -129,11 +143,13 @@ class Index extends React.Component{
             <FormItem
               {...layout}
               label="商品类型"
-              extra="如不填，则适用所有商品"
             >
               {getFieldDecorator('classify', {
-                initialValue: [],
-                rules: [],
+                initialValue: couponread&&couponread.classify,
+                rules: [{
+                  required: true,
+                  message: '请选择适用商品'
+                }],
               })(
                 <Select mode="multiple">
                   {

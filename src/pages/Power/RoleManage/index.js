@@ -1,28 +1,26 @@
 import React from 'react';
-import {Table,Card,Button} from 'antd'
+import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva/index';
 import {tableFields} from './fields';
 import Operation from '@/components/Operation/Operation';
-// import SearchForm from '@/components/SearchForm';
-// import FormUtils from '@/utils/form';
 import TableUtils from '@/utils/table'
-import CouponModal from './couponModal'
+import CouponModal  from './couponModal'
 
-// const {createFields}=FormUtils;
 const {createColumns}=TableUtils;
 const getList=(pn,ps)=> {
   window.apiconn.send_obj({
     obj: "admin",
-    act: "goldmollist",
+    act: "couponlist",
     page_num: pn,
     page_size: ps
   });
 }
 
-@connect(({ integralGoldmolManage }) => ({
-  goldmollist:integralGoldmolManage.goldmollist,
-  goldmolread:integralGoldmolManage.goldmolread
+@connect(({ roleManage }) => ({
+  couponlist:roleManage.couponlist,
+  classifylist:roleManage.classifylist,
+  couponread:roleManage.couponread
 }))
 class Index extends React.Component {
   constructor(props) {
@@ -34,7 +32,13 @@ class Index extends React.Component {
   }
 
   componentDidMount(){
-    getList(1,10000);
+    getList(1,100000);
+    window.apiconn.send_obj({
+      obj:"admin",
+      act:"classifylist",
+      page_num:1,
+      page_size:1000
+    })
   }
 
   getTableColumns=(fields)=>{
@@ -49,8 +53,8 @@ class Index extends React.Component {
               const {_id}=record;
               window.apiconn.send_obj({
                 obj:"admin",
-                act:"goldmolread",
-                id:_id
+                act:"couponread",
+                recordid:_id
               });
               this.setState({
                 visModal:true,
@@ -62,7 +66,23 @@ class Index extends React.Component {
           <span className="ant-divider" />
           <Operation
             disable={record.id === -1}
-            onClick={() => this.handleAccountModal(record, 'detail')}
+            onClick={() => {
+              const {_id}=record;
+              Modal.confirm({
+                title:'确定删除该条数据？',
+                onOk:()=>{
+                  window.apiconn.send_obj({
+                    obj:"admin",
+                    act:"coupondel",
+                    recordid:_id
+                  });
+                  getList(1,10);
+                }
+              })
+
+
+
+            }}
           >删除
           </Operation>
         </div>)}];
@@ -72,54 +92,52 @@ class Index extends React.Component {
 
   render() {
     const {visModal,opType}=this.state;
-    const {goldmollist,goldmolread}=this.props;
-    const {_id}=goldmolread;
-    // const searchProps={
-    //   fields:createFields(searchFields).values()
-    // };
+    const {classifylist,couponlist,couponread}=this.props;
+    const {_id}=couponread;
     const tableProps={
       columns:this.getTableColumns(tableFields),
       bordered:true,
-      dataSource:goldmollist
+      dataSource:couponlist
     };
     const modalProps={
       'add':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'goldmoladd',
+            act:'couponadd',
             ...values
           })
         },
-        goldmolread:{}
+        couponread:{}
       },
       'edit':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'goldmolmodi',
-            id:_id,
+            act:'couponmodi',
+            recordid:_id,
             ...values
           })
         },
-        goldmolread
+        couponread
       }
     };
-    const couponModalProps= {
+    const CouponModalProps= {
       onCancel: () => {
         this.setState({ visModal: false })
       },
       callBack:getList,
+      classifylist,
       ...modalProps[opType]
     };
 
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <Button type='primary' onClick={()=>this.setState({visModal:true})}>新增</Button>
+          <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
           <p />
           <Table {...tableProps} />
-          {visModal&& <CouponModal {...couponModalProps} /> }
+          {visModal&& <CouponModal {...CouponModalProps} /> }
         </Card>
 
       </PageHeaderWrapper>

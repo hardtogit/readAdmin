@@ -1,39 +1,38 @@
 import React from 'react';
-import {Table,Card,Button} from 'antd'
+import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva/index';
-import {tableFields,searchFields} from './fields';
+import {tableFields} from './fields';
 import Operation from '@/components/Operation/Operation';
-import SearchForm from '@/components/SearchForm';
-import FormUtils from '@/utils/form';
 import TableUtils from '@/utils/table'
 import CouponModal  from './couponModal'
 
-const {createFields}=FormUtils;
 const {createColumns}=TableUtils;
-const getList=()=> {
+const getList=(pn,ps)=> {
   window.apiconn.send_obj({
     obj: "admin",
     act: "couponlist",
-    page_num: 1,
-    page_size: 10
+    page_num: pn,
+    page_size: ps
   });
 }
 
 @connect(({ discountCouponManage }) => ({
   couponlist:discountCouponManage.couponlist,
-  classifylist:discountCouponManage.classifylist
+  classifylist:discountCouponManage.classifylist,
+  couponread:discountCouponManage.couponread
 }))
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visModal:false,
+      opType:'add'
     };
   }
 
   componentDidMount(){
-    getList();
+    getList(1,100000);
     window.apiconn.send_obj({
       obj:"admin",
       act:"classifylist",
@@ -49,52 +48,93 @@ class Index extends React.Component {
       render: (text, record) => (
         <div>
           <Operation
-            disable={record.id === -1}
-            onClick={() => this.handleAccountModal(record, 'detail')}
-          >查看
-          </Operation>
-          <span className="ant-divider" />
-          <Operation
             disable={record.status === 'DISABLE'}
-            onClick={() => this.handleAccountModal(record, 'edit')}
+            onClick={() =>{
+              const {_id}=record;
+              window.apiconn.send_obj({
+                obj:"admin",
+                act:"couponread",
+                recordid:_id
+              });
+              this.setState({
+                visModal:true,
+                opType:'edit'
+              })
+            }}
           >修改
           </Operation>
           <span className="ant-divider" />
+          <Operation
+            disable={record.id === -1}
+            onClick={() => {
+              const {_id}=record;
+              Modal.confirm({
+                title:'确定删除该条数据？',
+                onOk:()=>{
+                  window.apiconn.send_obj({
+                    obj:"admin",
+                    act:"coupondel",
+                    recordid:_id
+                  });
+                  getList(1,10);
+                }
+              })
+
+
+
+            }}
+          >删除
+          </Operation>
         </div>)}];
     return createColumns(fields).enhance(extraFields).values()
 
   };
 
   render() {
-    const {visModal}=this.state;
-    const {classifylist,couponlist}=this.props;
-    const searchProps={
-      fields:createFields(searchFields).values()
-    };
+    const {visModal,opType}=this.state;
+    const {classifylist,couponlist,couponread}=this.props;
+    const {_id}=couponread;
     const tableProps={
       columns:this.getTableColumns(tableFields),
       bordered:true,
       dataSource:couponlist
     };
+    const modalProps={
+      'add':{
+        onOk:(values)=>{
+          window.apiconn.send_obj({
+            obj:'admin',
+            act:'couponadd',
+            ...values
+          })
+        },
+        couponread:{}
+      },
+      'edit':{
+        onOk:(values)=>{
+          window.apiconn.send_obj({
+            obj:'admin',
+            act:'couponmodi',
+            recordid:_id,
+            ...values
+          })
+        },
+        couponread
+      }
+    };
     const CouponModalProps= {
       onCancel: () => {
         this.setState({ visModal: false })
       },
+      callBack:getList,
       classifylist,
-      onOk:(values)=>{
-        window.apiconn.send_obj({
-           obj:'admin',
-           act:'couponadd',
-             ...values
-        })
-      }
+      ...modalProps[opType]
     };
 
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <SearchForm {...searchProps} />
-          <Button type='primary' onClick={()=>this.setState({visModal:true})}>新增</Button>
+          <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
           <p />
           <Table {...tableProps} />
           {visModal&& <CouponModal {...CouponModalProps} /> }

@@ -66,10 +66,10 @@ class LoginPage extends Component {
               login.type === 'account' &&
               !submitting &&
               this.renderMessage('账户或密码错误（admin/888888）')}
-            <UserName name="account" placeholder="admin/user" />
+            <UserName name="account" placeholder="用户名" />
             <Password
               name="password"
-              placeholder="1/123456"
+              placeholder="密码"
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>

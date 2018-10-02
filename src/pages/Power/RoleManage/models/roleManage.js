@@ -1,10 +1,11 @@
 
 export default {
-  namespace: 'discountCouponManage',
+  namespace: 'roleManage',
 
   state: {
     couponlist:[],
-    classifylist:[]
+    classifylist:[],
+    couponread:{}
   },
 
   effects: {
@@ -15,10 +16,15 @@ export default {
       })
     },
     *classifylist({payload},{put}){
-      console.log(payload)
       yield put({
         type:'save',
         payload:{classifylist:payload.info}
+      })
+    },
+    *couponread({payload},{put}){
+      yield put({
+        type:'save',
+        payload:{couponread:payload.info}
       })
     },
   },

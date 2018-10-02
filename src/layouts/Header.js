@@ -52,6 +52,7 @@ class HeaderView extends PureComponent {
 
   handleMenuClick = ({ key }) => {
     if (key === 'logout') {
+      sessionStorage.removeItem('credential_data');
       window.apiconn.logout()
     }
   };

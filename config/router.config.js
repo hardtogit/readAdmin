@@ -21,21 +21,24 @@ export default [
       {
         path: '/goods',
         name: 'goods',
-        icon: 'dashboard',
+        icon: 'database',
         routes: [
           {
             path: '/goods/manage',
             name: 'goodsManage',
+            icon:'shop',
             component: './GoodsManage',
           },
           {
             path: '/goods/typeManage',
             name: 'typeManage',
+            icon:'cluster',
             component: './TypeManage',
           },
           {
             path: '/goods/orderManage',
             name: 'orderManage',
+            icon:'shopping',
             component: './OrderManage',
           }
         ],
@@ -43,17 +46,38 @@ export default [
       {
         path: '/coupon',
         name: 'coupon',
-        icon: 'dashboard',
+        icon: 'credit-card',
         routes: [
           {
             path: '/coupon/discountCouponManage',
             name: 'discountCouponManage',
             component: './CouponManage/DiscountCouponManage',
+            icon:'printer'
           },
           {
             path: '/coupon/integralCouponManage',
             name: 'integralCouponManage',
             component: './CouponManage/IntegralCouponManage',
+            icon:'printer'
+          }
+        ],
+      },
+      {
+        path: '/power',
+        name: 'power',
+        icon: 'credit-card',
+        routes: [
+          {
+            path: '/power/accountManage',
+            name: 'accountManage',
+            component: './CouponManage/DiscountCouponManage',
+            icon:'printer'
+          },
+          {
+            path: '/power/roleManage',
+            name: 'roleManage',
+            component: './Power/roleManage',
+            icon:'printer'
           }
         ],
       },

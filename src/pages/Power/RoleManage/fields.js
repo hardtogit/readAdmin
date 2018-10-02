@@ -17,12 +17,25 @@
      name: '名称',
    },
    {
-     key: 'value',
-     name: '面额',
+     key: 'reduce',
+     name: '立减金额',
    },
    {
+     key: 'limit',
+     name: '最低限额',
+   },
+   {
+     key: 'days',
+     name: '有效期',
+   },{
+     key: 'gold',
+     name: '积分',
+   },{
      key: 'status',
-     name: '状态',
+     name: '是否有效',
+   },{
+     key: 'classify',
+     name: '商品类型',
    }
  ];
  export  {

@@ -26,18 +26,35 @@ export default {
           });
           break;
         case "couponadd":
-          message.success('优惠卷新增成功')
+          message.success('优惠卷新增成功');
+          break;
+        case "couponread":
+          yield put({
+            type:'discountCouponManage/couponread',
+            payload
+          });
+          break;
+        case "coupondel":
+          message.success('删除成功');
+          break;
+        case 'goldmollist':
+          yield put({
+            type:'integralGoldmolManage/goldmollist',
+            payload
+          });
+          break;
+        case "goldmoladd":
+          message.success('积分卷新增成功');
+          break;
+        case "goldmolread":
+          yield put({
+            type:'integralGoldmolManage/goldmolread',
+            payload
+          });
+          break;
         default:
           break
       }
-      if(payload.act==="classifylist" ){
-
-      }
-
-      yield put({
-          type:'discountCouponManage/receiveList',
-           payload
-      })
     },
     *fetchNotices(_, { call, put }) {
       const data = yield call(queryNotices);
