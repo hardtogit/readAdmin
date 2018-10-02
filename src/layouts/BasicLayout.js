@@ -123,9 +123,6 @@ class BasicLayout extends React.PureComponent {
       dispatch(routerRedux.push('/user/login'));
     };
     dispatch({
-      type: 'user/fetchCurrent',
-    });
-    dispatch({
       type: 'setting/getSetting',
     });
     this.renderRef = requestAnimationFrame(() => {
