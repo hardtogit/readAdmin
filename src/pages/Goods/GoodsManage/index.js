@@ -2,10 +2,10 @@ import React from 'react';
 import {Table,Card} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import {tableFields,searchFields} from './fields';
-import Operation from '../../components/Operation/Operation';
-import SearchForm from '../../components/SearchForm';
-import FormUtils from '../../utils/form';
-import TableUtils from '../../utils/table'
+import Operation from '../../../components/Operation/Operation';
+import SearchForm from '../../../components/SearchForm';
+import FormUtils from '../../../utils/form';
+import TableUtils from '../../../utils/table'
 
 const {createFields}=FormUtils;
 const {createColumns}=TableUtils

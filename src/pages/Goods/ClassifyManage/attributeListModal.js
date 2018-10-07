@@ -1,44 +1,40 @@
-import React from 'react';
-import {Table,Card,Button,Modal} from 'antd'
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { connect } from 'dva/index';
-import {tableFields} from './fields';
-import Operation from '@/components/Operation/Operation';
+import React from 'react'
+import {Modal,Table,Button} from 'antd'
 import TableUtils from '@/utils/table'
-import RoleModal  from './roleModal'
+import Operation from '@/components/Operation/Operation';
+import AttributeModal from './attributeModal'
+import { attributeTableFields } from './fields';
 
-const {createColumns}=TableUtils;
-const getList=(pn,ps)=> {
+const getList=(pn,ps,recordid)=> {
   window.apiconn.send_obj({
     obj: "admin",
-    act: "rolelist",
+    act: "attributelist",
     page_num: pn,
-    page_size: ps
+    page_size: ps,
+    recordid
   });
 }
-
-@connect(({ roleManage }) => ({
-  rolelist:roleManage.rolelist,
-  classifylist:roleManage.classifylist,
-  roleread:roleManage.roleread
-}))
-class Index extends React.Component {
-  constructor(props) {
+const {createColumns}=TableUtils;
+class AttributeListModal extends React.Component{
+  constructor(props){
     super(props);
-    this.state = {
+    this.state={
       visModal:false,
-      opType:'add'
-    };
+      opType:'edit'
+    }
   }
 
   componentDidMount(){
-    getList(1,100000);
+    const {recordid}=this.props;
+    getList(1,10000,recordid)
   }
 
   getTableColumns=(fields)=>{
+    const {recordid}=this.props;
     const extraFields = [{
       key: 'operator',
       name: '操作',
+      width:240,
       render: (text, record) => (
         <div>
           <Operation
@@ -47,7 +43,7 @@ class Index extends React.Component {
               const {_id}=record;
               window.apiconn.send_obj({
                 obj:"admin",
-                act:"roleread",
+                act:"attributeread",
                 id:_id
               });
               this.setState({
@@ -67,10 +63,10 @@ class Index extends React.Component {
                 onOk:()=>{
                   window.apiconn.send_obj({
                     obj:"admin",
-                    act:"roledel",
+                    act:"attributedel",
                     id:_id
                   });
-                  getList(1,10);
+                  getList(1,10000,recordid);
                 }
               })
 
@@ -84,56 +80,67 @@ class Index extends React.Component {
 
   };
 
-  render() {
+  render(){
+    const {onCancel,onOk,form,callBack,attributelist,attributeread,recordid}=this.props;
     const {visModal,opType}=this.state;
-    const {rolelist,roleread}=this.props;
-    const {_id}=roleread;
-    const tableProps={
-      columns:this.getTableColumns(tableFields),
-      bordered:true,
-      dataSource:rolelist
-    };
+    const {_id}=attributeread
     const modalProps={
       'add':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'roleadd',
+            act:'attributeadd',
+            recordid,
             ...values
           })
         },
-        roleread:{}
+        attributeread:{}
       },
       'edit':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'rolemodi',
+            act:'attributemodi',
             id:_id,
+            recordid,
             ...values
           })
         },
-        roleread
+        attributeread
       }
     };
-    const roleModalProps= {
+    const tableProps={
+      columns:this.getTableColumns(attributeTableFields),
+      bordered:true,
+      dataSource:attributelist
+    };
+    const listModalProps={
+      title:'属性列表',
+      visible:true,
+      width:1000,
+      onCancel,
+      onOk:()=>{
+         onCancel()
+      }
+    };
+    const  AttributeModalProps={
       onCancel: () => {
         this.setState({ visModal: false })
       },
-      callBack:getList,
+      callBack:()=>getList(1,10000,recordid),
       ...modalProps[opType]
-    };
+    }
+    return(
 
-    return (
-      <PageHeaderWrapper>
-        <Card bordered={false}>
-          <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
-          <p />
-          <Table {...tableProps} />
-          {visModal&& <RoleModal {...roleModalProps} /> }
-        </Card>
-      </PageHeaderWrapper>
-    );
+      <Modal {...listModalProps}>
+        <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
+        <p />
+        <Table {...tableProps} />
+        {visModal&& <AttributeModal {...AttributeModalProps} /> }
+
+      </Modal>
+    )
   }
+
 }
-export default Index;
+export default AttributeListModal

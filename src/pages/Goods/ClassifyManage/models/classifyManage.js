@@ -1,30 +1,37 @@
 
 export default {
-  namespace: 'roleManage',
+  namespace: 'classifyManage',
 
   state: {
-    rolelist:[],
     classifylist:[],
-    roleread:{}
+    classifyread:{},
+    attributelist:[],
+    attributeread:{}
   },
 
   effects: {
-    * rolelist({payload},{put}){
+    * classifylist({payload},{put}){
       yield put({
         type:'save',
-        payload:{rolelist:payload.info,}
+        payload:{classifylist:payload.info,}
       })
     },
-    *classifylist({payload},{put}){
+    *classifyread({payload},{put}){
       yield put({
         type:'save',
-        payload:{classifylist:payload.info}
+        payload:{classifyread:payload.info}
       })
     },
-    *roleread({payload},{put}){
+    * attributelist({payload},{put}){
       yield put({
         type:'save',
-        payload:{roleread:payload.info}
+        payload:{attributelist:payload.info,}
+      })
+    },
+    *attributeread({payload},{put}){
+      yield put({
+        type:'save',
+        payload:{attributeread:payload.info}
       })
     },
   },

@@ -27,13 +27,13 @@ export default [
             path: '/goods/manage',
             name: 'goodsManage',
             icon:'shop',
-            component: './GoodsManage',
+            component: './Goods/GoodsManage',
           },
           {
-            path: '/goods/typeManage',
+            path: '/goods/classifyManage',
             name: 'typeManage',
             icon:'cluster',
-            component: './TypeManage',
+            component: './Goods/ClassifyManage',
           },
           {
             path: '/goods/orderManage',
@@ -65,19 +65,19 @@ export default [
       {
         path: '/power',
         name: 'power',
-        icon: 'credit-card',
+        icon: 'setting',
         routes: [
           {
             path: '/power/accountManage',
             name: 'accountManage',
             component: './CouponManage/DiscountCouponManage',
-            icon:'printer'
+            icon:'team'
           },
           {
             path: '/power/roleManage',
             name: 'roleManage',
             component: './Power/roleManage',
-            icon:'printer'
+            icon:'solution'
           }
         ],
       },

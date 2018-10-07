@@ -18,19 +18,19 @@
    },
    {
      key: 'name',
-     name: '书名',
+     name: '商品名',
    },
    {
      key: 'name',
-     name: '名师',
+     name: '价格',
    },
    {
      key: 'name',
-     name: '课程',
+     name: '库存',
    },
    {
      key: 'name',
-     name: '适读',
+     name: '分类',
    },{
      key: 'name',
      name: '状态',

@@ -62,23 +62,19 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
-        {currentUser.name ? (
-          <Dropdown overlay={menu}>
-            <span className={`${styles.action} ${styles.account}`}>
-              <Avatar
-                size="small"
-                className={styles.avatar}
-                src={currentUser.avatar}
-                alt="avatar"
-              />
-              <span className={styles.name}>{sessionStorage.getItem('credential_data')&&
+        <Dropdown overlay={menu}>
+          <span className={`${styles.action} ${styles.account}`}>
+            <Avatar
+              size="small"
+              className={styles.avatar}
+              src={currentUser.avatar}
+              alt="avatar"
+            />
+            <span className={styles.name}>{sessionStorage.getItem('credential_data')&&
               JSON.parse(sessionStorage.getItem('credential_data')).account}
-              </span>
             </span>
-          </Dropdown>
-        ) : (
-          <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-        )}
+          </span>
+        </Dropdown>
       </div>
     );
   }

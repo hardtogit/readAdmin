@@ -2,32 +2,36 @@ import React from 'react';
 import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva/index';
+import AttributeListModal from './attributeListModal'
 import {tableFields} from './fields';
 import Operation from '@/components/Operation/Operation';
 import TableUtils from '@/utils/table'
-import RoleModal  from './roleModal'
+import ClassifyModal  from './classifyModal'
 
 const {createColumns}=TableUtils;
 const getList=(pn,ps)=> {
   window.apiconn.send_obj({
     obj: "admin",
-    act: "rolelist",
+    act: "classifylist",
     page_num: pn,
     page_size: ps
   });
 }
 
-@connect(({ roleManage }) => ({
-  rolelist:roleManage.rolelist,
-  classifylist:roleManage.classifylist,
-  roleread:roleManage.roleread
+@connect(({ classifyManage }) => ({
+  classifylist:classifyManage.classifylist,
+  classifyread:classifyManage.classifyread,
+  attributelist:classifyManage.attributelist,
+  attributeread:classifyManage.attributeread,
 }))
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visModal:false,
-      opType:'add'
+      visList:false,
+      opType:'add',
+      id:''
     };
   }
 
@@ -39,16 +43,29 @@ class Index extends React.Component {
     const extraFields = [{
       key: 'operator',
       name: '操作',
+      width:240,
       render: (text, record) => (
         <div>
           <Operation
             disable={record.status === 'DISABLE'}
             onClick={() =>{
-              const {_id}=record;
+              const {recordid}=record;
+              this.setState({
+                visList:true,
+                id:recordid
+              })
+            }}
+          >属性列表
+          </Operation>
+          <span className="ant-divider" />
+          <Operation
+            disable={record.status === 'DISABLE'}
+            onClick={() =>{
+              const {recordid}=record;
               window.apiconn.send_obj({
                 obj:"admin",
-                act:"roleread",
-                id:_id
+                act:"classifyread",
+                recordid
               });
               this.setState({
                 visModal:true,
@@ -61,14 +78,14 @@ class Index extends React.Component {
           <Operation
             disable={record.id === -1}
             onClick={() => {
-              const {_id}=record;
+              const {recordid}=record;
               Modal.confirm({
                 title:'确定删除该条数据？',
                 onOk:()=>{
                   window.apiconn.send_obj({
                     obj:"admin",
-                    act:"roledel",
-                    id:_id
+                    act:"classifydel",
+                    recordid
                   });
                   getList(1,10);
                 }
@@ -85,43 +102,52 @@ class Index extends React.Component {
   };
 
   render() {
-    const {visModal,opType}=this.state;
-    const {rolelist,roleread}=this.props;
-    const {_id}=roleread;
+    const {visModal,opType,visList,id}=this.state;
+    const {classifylist,classifyread,attributelist,attributeread}=this.props;
+    const {recordid}=classifyread;
     const tableProps={
       columns:this.getTableColumns(tableFields),
       bordered:true,
-      dataSource:rolelist
+      dataSource:classifylist
     };
     const modalProps={
       'add':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'roleadd',
+            act:'classifyadd',
             ...values
           })
         },
-        roleread:{}
+        classifyread:{}
       },
       'edit':{
         onOk:(values)=>{
           window.apiconn.send_obj({
             obj:'admin',
-            act:'rolemodi',
-            id:_id,
+            act:'classifymodi',
+            recordid,
             ...values
           })
         },
-        roleread
+        classifyread
       }
     };
-    const roleModalProps= {
+    const classifyModalProps= {
       onCancel: () => {
         this.setState({ visModal: false })
       },
       callBack:getList,
       ...modalProps[opType]
+    };
+    const attributeListModalProps={
+      onCancel: () => {
+        this.setState({ visList: false })
+      },
+      attributelist,
+      attributeread,
+      recordid:id
+
     };
 
     return (
@@ -130,8 +156,10 @@ class Index extends React.Component {
           <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
           <p />
           <Table {...tableProps} />
-          {visModal&& <RoleModal {...roleModalProps} /> }
+          {visModal&& <ClassifyModal {...classifyModalProps} /> }
+          {visList&&<AttributeListModal {...attributeListModalProps} />}
         </Card>
+
       </PageHeaderWrapper>
     );
   }

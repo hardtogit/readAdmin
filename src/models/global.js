@@ -18,6 +18,10 @@ export default {
           type:'discountCouponManage/classifylist',
           payload
         });
+          yield put({
+            type:'classifyManage/classifylist',
+            payload
+          });
           break;
         case 'couponlist':
           yield put({
@@ -49,6 +53,57 @@ export default {
         case "goldmolread":
           yield put({
             type:'integralGoldmolManage/goldmolread',
+            payload
+          });
+          break;
+          // role
+        case 'rolelist':
+          yield put({
+            type:'roleManage/rolelist',
+            payload
+          });
+          break;
+        case "roleadd":
+          message.success('角色新增成功');
+          break;
+        case "roleread":
+          yield put({
+            type:'roleManage/roleread',
+            payload
+          });
+          break;
+        case "roledel":
+          message.success('角色删除成功');
+          break;
+          // classify
+        case "classifyadd":
+          message.success('分类新增成功');
+          break;
+        case "classifyread":
+          yield put({
+            type:'classifyManage/goldmolread',
+            payload
+          });
+          break;
+        // attribute
+        case "attributelist":
+          yield put({
+            type:'classifyManage/attributelist',
+            payload
+          });
+          break;
+        case "attributeadd":
+          message.success('属性新增成功');
+          break;
+        case "attributeread":
+          yield put({
+            type:'classifyManage/attributeread',
+            payload
+          });
+          break;
+        case "attributedel":
+          yield put({
+            type:'classifyManage/attributedel',
             payload
           });
           break;
