@@ -30,6 +30,12 @@ export default [
             component: './Goods/GoodsManage',
           },
           {
+            path: '/goods/detail',
+            name: 'goodsDetail',
+            icon:'shop',
+            component: './Goods/GoodsManage/details',
+          },
+          {
             path: '/goods/classifyManage',
             name: 'typeManage',
             icon:'cluster',
@@ -76,7 +82,13 @@ export default [
           {
             path: '/power/roleManage',
             name: 'roleManage',
-            component: './Power/roleManage',
+            component: './Power/RoleManage',
+            icon:'solution'
+          },
+          {
+            path: '/power/freightManage',
+            name: 'freightManage',
+            component: './Power/FreightManage',
             icon:'solution'
           }
         ],

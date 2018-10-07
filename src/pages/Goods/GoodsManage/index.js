@@ -8,7 +8,8 @@ import FormUtils from '../../../utils/form';
 import TableUtils from '../../../utils/table'
 
 const {createFields}=FormUtils;
-const {createColumns}=TableUtils
+const {createColumns}=TableUtils;
+
 class Index extends React.Component {
   constructor(props) {
     super(props);

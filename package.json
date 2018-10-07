@@ -30,6 +30,7 @@
     "bizcharts": "^3.2.2",
     "bizcharts-plugin-slider": "^2.0.3",
     "classnames": "^2.2.6",
+    "clone-deep": "^4.0.0",
     "dva": "^2.4.0",
     "enquire-js": "^0.2.1",
     "hash.js": "^1.1.5",
