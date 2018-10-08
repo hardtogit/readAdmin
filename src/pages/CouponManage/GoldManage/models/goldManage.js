@@ -1,30 +1,30 @@
 
 export default {
-  namespace: 'freightManage',
+  namespace: 'goldManage',
 
   state: {
-    freightlist:[],
-    provincelist:[],
-    freightread:{}
+    goldlist:[],
+    goldmollist:[],
+    goldread:{}
   },
 
   effects: {
-    * freightlist({payload},{put}){
+    * goldlist({payload},{put}){
       yield put({
         type:'save',
-        payload:{freightlist:payload.info,}
+        payload:{goldlist:payload.info,}
       })
     },
-    * provincelist({payload},{put}){
+    * goldmollist({payload},{put}){
       yield put({
         type:'save',
-        payload:{provincelist:payload.info,}
+        payload:{goldmollist:payload.info,}
       })
     },
-    *freightread({payload},{put}){
+    *goldread({payload},{put}){
       yield put({
         type:'save',
-        payload:{freightread:payload.info}
+        payload:{goldread:payload.info}
       })
     },
   },

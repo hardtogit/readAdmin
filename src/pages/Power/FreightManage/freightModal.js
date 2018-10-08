@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Form,Input,Col,Select,InputNumber} from 'antd'
+import {Modal,Form,Col,Select} from 'antd'
 import InputNumberGroup from '../../../components/InputNumberGroup'
 
 const layout = {
@@ -18,10 +18,10 @@ class Index extends React.Component{
     }}
 
   render(){
-    const {onCancel,form:{getFieldDecorator},onOk,classifylist,form,callBack,freightread}=this.props;
+    const {onCancel,form:{getFieldDecorator},onOk,provincelist,form,callBack,freightread}=this.props;
     const {_id}=freightread;
     const modalProps={
-      title:_id&&'修改优惠券'||'添加优惠卷',
+      title:_id&&'修改运费配置'||'添加运费配置',
       visible:true,
       width:620,
       onCancel,
@@ -44,119 +44,51 @@ class Index extends React.Component{
           <Col span={12}>
             <FormItem
               {...layout}
-              label="名称"
+              label="目的地"
             >
-              {getFieldDecorator('name', {
-                  initialValue: freightread&&freightread.name,
+              {getFieldDecorator('destination', {
+                  initialValue: freightread&&freightread.destination,
                   rules: [{
                     required: true,
-                    message: '名称必须填写'
+                    message: '省份必须选择'
                   }],
                 })(
-                  <Input  />
+                  <Select disabled={_id}>
+                    {provincelist.map((item)=>(<Option key={item}>{item}</Option>))}
+
+                  </Select>
                 )}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
               {...layout}
-              label="立减金额"
+              label="首重价格"
             >
-              {getFieldDecorator('reduce', {
-              initialValue: freightread&&freightread.reduce,
+              {getFieldDecorator('firstwei', {
+              initialValue: freightread&&freightread.firstwei,
               rules: [{
                 required: true,
-                message: '请输入立减金额'
+                message: '请输入首重价格'
               }],
             })(
-              <InputNumberGroup min={0} precision={0} addonAfter="元" />
+              <InputNumberGroup min={0} precision={2} addonAfter="元" />
             )}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
               {...layout}
-              label="最低限额"
+              label="续重价格"
             >
-              {getFieldDecorator('limit', {
-              initialValue: freightread&&freightread.limit,
-              rules: [{
-                required: true,
-                message: '请输入最低限额'
-              }],
-            })(
-              <InputNumberGroup min={0} precision={0} addonAfter="元" />
-            )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              {...layout}
-              label="有效期"
-            >
-              {getFieldDecorator('days', {
-                initialValue: freightread&&freightread.days,
+              {getFieldDecorator('secondwei', {
+                initialValue: freightread&&freightread.secondwei,
                 rules: [{
                   required: true,
-                  message: '请输入有效期'
+                  message: '请输入续重价格'
                 }],
               })(
-                <InputNumberGroup min={0} precision={0} addonAfter="天" />
-              )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              {...layout}
-              label="积分"
-            >
-              {getFieldDecorator('gold', {
-                initialValue: freightread&&freightread.gold,
-                rules: [{
-                  required: true,
-                  message: '请输入兑换积分'
-                }],
-              })(
-                <InputNumber style={{width:'100%'}} min={0} precision={0} />
-              )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              {...layout}
-              label="是否有效"
-            >
-              {getFieldDecorator('status', {
-                initialValue: freightread&&freightread.status,
-                rules: [{
-                  required: true,
-                  message: '请选择是否有效'
-                }],
-              })(
-                <Select>
-                  <Option value="是">是</Option>
-                  <Option value="否">否</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              {...layout}
-              label="商品类型"
-            >
-              {getFieldDecorator('classify', {
-                initialValue: freightread&&freightread.classify,
-                rules: [{
-                  required: true,
-                  message: '请选择适用商品'
-                }],
-              })(
-                <Select mode="multiple">
-                  {
-                    classifylist.map((item)=><Option key={item.recordid} value={item.name}>{item.name}</Option>)
-                  }
-                </Select>
+                <InputNumberGroup min={0} precision={2} addonAfter="元" />
               )}
             </FormItem>
           </Col>

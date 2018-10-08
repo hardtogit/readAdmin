@@ -22,6 +22,10 @@ export default {
             type:'classifyManage/classifylist',
             payload
           });
+          yield put({
+            type:'goodsDetail/classifylist',
+            payload
+          });
           break;
         case 'couponlist':
           yield put({
@@ -41,14 +45,22 @@ export default {
         case "coupondel":
           message.success('删除成功');
           break;
+          // goldmol
         case 'goldmollist':
           yield put({
             type:'integralGoldmolManage/goldmollist',
             payload
           });
+          yield put({
+            type:'goldManage/goldmollist',
+            payload
+          });
           break;
         case "goldmoladd":
-          message.success('积分卷新增成功');
+          message.success('积分模板新增成功');
+          break;
+        case "goldmoldel":
+          message.success('积分模板删除成功');
           break;
         case "goldmolread":
           yield put({
@@ -56,6 +68,26 @@ export default {
             payload
           });
           break;
+          // gold
+        case 'goldlist':
+          yield put({
+            type:'goldManage/goldlist',
+            payload
+          });
+          break;
+        case "goldadd":
+          message.success('积分卡新增成功');
+          break;
+        case "golddel":
+          message.success('积分卡删除成功');
+          break;
+        case "goldread":
+          yield put({
+            type:'goldManage/goldread',
+            payload
+          });
+          break;
+
           // role
         case 'rolelist':
           yield put({
@@ -91,6 +123,10 @@ export default {
             type:'classifyManage/attributelist',
             payload
           });
+          yield put({
+            type:'goodsDetail/attributelist',
+            payload
+          });
           break;
         case "attributeadd":
           message.success('属性新增成功');
@@ -106,6 +142,31 @@ export default {
             type:'classifyManage/attributedel',
             payload
           });
+          break;
+          // freight
+        case 'provincelist':
+          yield put({
+            type:'freightManage/provincelist',
+            payload
+          });
+          break;
+        case 'freightlist':
+          yield put({
+            type:'freightManage/freightlist',
+            payload
+          });
+          break;
+        case "freightadd":
+          message.success('新增成功');
+          break;
+        case "freightread":
+          yield put({
+            type:'freightManage/freightread',
+            payload
+          });
+          break;
+        case "freightdel":
+          message.success('删除成功');
           break;
         default:
           break

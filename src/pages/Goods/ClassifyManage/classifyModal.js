@@ -20,7 +20,7 @@ class Index extends React.Component{
     const {onCancel,form:{getFieldDecorator},onOk,form,callBack,classifyread}=this.props;
     const {recordid}=classifyread;
     const modalProps={
-      title:recordid?'修改角色':'添加角色',
+      title:recordid?'修改类型':'添加类型',
       visible:true,
       width:600,
       onCancel,
@@ -43,7 +43,7 @@ class Index extends React.Component{
         <Form className="clearfix">
           <FormItem
             {...layout}
-            label="角色名称"
+            label="类型名称"
           >
             {getFieldDecorator('name', {
                   initialValue: classifyread&&classifyread.name,

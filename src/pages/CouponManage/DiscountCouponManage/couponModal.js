@@ -144,13 +144,11 @@ class Index extends React.Component{
             <FormItem
               {...layout}
               label="商品类型"
+              extra="如不选则适用所有商品"
             >
               {getFieldDecorator('classify', {
                 initialValue: couponread&&couponread.classify,
-                rules: [{
-                  required: true,
-                  message: '请选择适用商品'
-                }],
+                rules: [],
               })(
                 <Select mode="multiple">
                   {

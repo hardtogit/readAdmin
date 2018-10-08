@@ -64,7 +64,13 @@ export default [
             path: '/coupon/integralCouponManage',
             name: 'integralCouponManage',
             component: './CouponManage/IntegralCouponManage',
-            icon:'printer'
+            icon:'border'
+          },
+          {
+            path: '/coupon/goldManage',
+            name: 'goldManage',
+            component: './CouponManage/GoldManage',
+            icon:'gold'
           }
         ],
       },
@@ -89,7 +95,7 @@ export default [
             path: '/power/freightManage',
             name: 'freightManage',
             component: './Power/FreightManage',
-            icon:'solution'
+            icon:'car'
           }
         ],
       },

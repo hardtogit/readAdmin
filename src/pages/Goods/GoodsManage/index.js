@@ -6,10 +6,17 @@ import Operation from '../../../components/Operation/Operation';
 import SearchForm from '../../../components/SearchForm';
 import FormUtils from '../../../utils/form';
 import TableUtils from '../../../utils/table'
+import { connect } from 'dva/index';
 
 const {createFields}=FormUtils;
 const {createColumns}=TableUtils;
 
+@connect(({ goodsManage }) => ({
+  classifylist:goodsManage.classifylist,
+  classifyread:goodsManage.classifyread,
+  attributelist:goodsManage.attributelist,
+  attributeread:goodsManage.attributeread,
+}))
 class Index extends React.Component {
   constructor(props) {
     super(props);

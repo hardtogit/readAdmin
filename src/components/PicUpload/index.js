@@ -2,7 +2,7 @@
  * 图片上传组建
  */
 import React from 'react';
-import { Upload, Icon, message } from 'antd';
+import { Upload, Button, Icon, message } from 'antd';
 import { looseEqual } from '../../utils/share';
 import previewImg from '../ImgPreview';
 
@@ -60,7 +60,6 @@ export default class Index extends React.Component {
     };
     this.onRemove = this.onRemove.bind(this);
     this.handleUploadChange = this.handleUploadChange.bind(this);
-    this.formatImgData = this.formatImgData.bind(this);
   }
 
   componentDidMount() {
@@ -106,28 +105,10 @@ export default class Index extends React.Component {
     this.setState({
       fileLists: newFileList,
     });
-    const content = this.formatImgData(newFileList).join(',');
+    const content = this.formatImgData(newFileList);
     if (onChange) {
       onChange(content);
     }
-  }
-
-  formatImgData(fileList) {
-    const { returnType = false } = this.props;
-    const formatData = [];
-    fileList.forEach((obj) => {
-      if (obj.isReturn) {
-        formatData.push(obj.attachId);
-      }
-      if (obj.response && obj.response.status === 'OK') {
-        if (returnType) {
-          formatData.push(obj.response.content[0].url);
-        } else {
-          formatData.push(obj.response.content[0].storeId);
-        }
-      }
-    });
-    return formatData;
   }
 
   beforeUpload = (file) => {
@@ -142,14 +123,28 @@ export default class Index extends React.Component {
     return isJPG && isLt2M;
   };
 
+  formatImgData=(fileList)=>{
+    const formatData = [];
+    fileList.forEach((obj) => {
+      if (obj.isReturn) {
+        formatData.push({thumb:obj.thumb,fid:obj.fid });
+      }else if (obj.response && obj.response.fid) {
+        formatData.push({thumb:obj.response.thumb,fid:obj.response.fid })
+      }
+
+    });
+    return formatData;
+  }
+
   handleUploadChange(info) {
+    console.log(info)
     const { fileLists } = this.state;
     const { onChange, getChange } = this.props;
     const { fileList, file } = info;
     this.setState({ fileLists: fileList });
-    const content = this.formatImgData(fileList).join(',');
-    if (onChange) {
-      content && onChange(content);
+    const content = this.formatImgData(fileList);
+    if (onChange&&content) {
+      onChange(content);
     }
     if (getChange) {
       getChange(info);
@@ -172,30 +167,21 @@ export default class Index extends React.Component {
     }
   }
 
-  getDataParams=(file)=>{
-    const formData = new FormData();
-    formData.append('local_file', file);
-    formData.append("proj", "yyqq");
-    return formData;
-  }
-
   render() {
-    const { uploadButton = uploadBtn, picLength, listType,multiple } = this.props;
+    const { uploadButton = uploadBtn, picLength, listType } = this.props;
     const { fileLists = [] } = this.state;
-    // 上传之前校验
     return (
       <div>
         <Upload
+          name="local_file"
           action='http://116.62.164.251/cgi-bin/upload.pl'
           fileList={fileLists}
-          data={this.getDataParams}
+          data={{ proj:'yyqq' }}
           listType={listType}
           accept="image/jpg,image/jpeg,image/png"
-          withCredentials
           onRemove={this.onRemove}
           onPreview={file => previewImg({ imgUrl: (file.url || file.thumbUrl) })}
           beforeUpload={this.beforeUpload}
-          multiple={multiple || false}
           onChange={this.handleUploadChange}
           headers={{ 'X-Requested-With': null , withCredentials: null}}
         >

@@ -22,15 +22,7 @@
    },{
      key: 'attribute',
      name: '属性',
-     render:(value)=>{
-       const arr=[];
-       if(value){
-         value.forEach((item)=>{
-           arr.push(item.attribute)
-         })
-       }
-       return arr.join('、')
-     }
+     render:(value)=>value.join('、')
 
    },
    {

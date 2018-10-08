@@ -181,3 +181,16 @@ export function formatWan(val) {
 export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
 }
+// 时间转换
+export const combineDate = (dateTime = [], format) => {
+  let startDate = '';
+  let endDate = '';
+  if (dateTime.length === 2) {
+    const startStr = !format ? `${dateTime[0].format('YYYY-MM-DD')} 00:00:00` : `${dateTime[0].format(format)}`;
+    const endStr = !format ? `${dateTime[1].format('YYYY-MM-DD')} 23:59:59` : `${dateTime[1].format(format)}`;
+
+    startDate = startStr;
+    endDate = endStr;
+  }
+  return { startDate, endDate };
+};

@@ -13,29 +13,16 @@
 ];
  const  tableFields=[
    {
-     key: 'name',
-     name: '名称',
+     key: 'destination',
+     name: '目的地',
    },
    {
-     key: 'reduce',
-     name: '立减金额',
+     key: 'firstwei',
+     name: '首重（元/kg）',
    },
    {
-     key: 'limit',
-     name: '最低限额',
-   },
-   {
-     key: 'days',
-     name: '有效期',
-   },{
-     key: 'gold',
-     name: '积分',
-   },{
-     key: 'status',
-     name: '是否有效',
-   },{
-     key: 'classify',
-     name: '商品类型',
+     key: 'secondwei',
+     name: '续重（元/kg）',
    }
  ];
  export  {

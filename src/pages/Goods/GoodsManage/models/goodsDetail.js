@@ -1,30 +1,30 @@
 
 export default {
-  namespace: 'freightManage',
+  namespace: 'goodsDetail',
 
   state: {
-    freightlist:[],
-    provincelist:[],
-    freightread:{}
+    classifylist:[],
+    goodsread:{},
+    attributelist:[]
   },
 
   effects: {
-    * freightlist({payload},{put}){
+    *classifylist({payload},{put}){
       yield put({
         type:'save',
-        payload:{freightlist:payload.info,}
+        payload:{classifylist:payload.info}
       })
     },
-    * provincelist({payload},{put}){
+    *attributelist({payload},{put}){
       yield put({
         type:'save',
-        payload:{provincelist:payload.info,}
+        payload:{attributelist:payload.info}
       })
     },
-    *freightread({payload},{put}){
+    *goodsread({payload},{put}){
       yield put({
         type:'save',
-        payload:{freightread:payload.info}
+        payload:{goodsread:payload.info}
       })
     },
   },
