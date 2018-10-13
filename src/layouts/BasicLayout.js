@@ -90,6 +90,9 @@ class BasicLayout extends React.PureComponent {
         });
       }
       if(!jo.ustr&&jo.obj === "person"&&jo.act === "login"){
+        const {_id}=jo.info.user_info
+        sessionStorage.setItem('userId',_id);
+        sessionStorage.setItem('userObj',JSON.stringify(jo.info.user_info))
         props.dispatch(routerRedux.push('/goods/manage'));
       }
       if (jo.obj === "person" && jo.act === "login" && jo.user_info && jo.server_info) {

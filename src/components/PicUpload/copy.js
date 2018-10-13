@@ -112,6 +112,9 @@ export default class Index extends React.Component {
   }
 
   beforeUpload = (file) => {
+    this.setState({
+      fileLists:[]
+    });
     const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
     if (!isJPG) {
       message.error('文件格式须为jpg、jpeg、png');
@@ -142,13 +145,13 @@ export default class Index extends React.Component {
     const { onChange, getChange } = this.props;
     const { fileList, file } = info;
     this.setState({ fileLists: fileList });
-    const content = this.formatImgData(fileList);
-    if (onChange&&content) {
-      onChange(content);
-    }
-    if (getChange) {
-      getChange(content);
-    }
+    // const content = this.formatImgData(fileList);
+    // if (onChange&&content) {
+    //   onChange(content);
+    // }
+    // if (getChange) {
+    //   getChange(content);
+    // }
     if (file.status === 'done') {
       if (file.response.status === 'ERROR') {
         message.error(file.response.errorMsg || '图片上传失败');
@@ -156,6 +159,14 @@ export default class Index extends React.Component {
         const newFileList = fileLists.slice();
         newFileList.splice(index, 1);
         this.setState({ fileLists: newFileList });
+      }else{
+        const content = this.formatImgData(fileList);
+        if (onChange&&content) {
+          onChange(content);
+        }
+        if (getChange) {
+          getChange(content);
+        }
       }
     }
     if (file.status === 'error') {
@@ -186,7 +197,7 @@ export default class Index extends React.Component {
           onChange={this.handleUploadChange}
           headers={{ 'X-Requested-With': null , withCredentials: null}}
         >
-          {fileLists.length >= picLength ? null : uploadButton}
+          { uploadButton}
         </Upload>
       </div>
     );

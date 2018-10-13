@@ -13,32 +13,31 @@
 ];
  const  tableFields=[
    {
-     key: 'name',
-     name: '名称',
+     key: 'display_name',
+     name: '昵称',
    },
    {
-     key: 'reduce',
-     name: '立减金额',
+     key: 'phone',
+     name: '账号（手机号）',
    },
    {
-     key: 'limit',
-     name: '最低限额',
+     key: 'grade',
+     name: '会员等级',
    },
    {
-     key: 'days',
-     name: '有效期',
+     key: 'money',
+     name: '余额',
    },{
-     key: 'gold',
-     name: '积分',
-   },{
-     key: 'price',
-     name: '价格',
-   },{
-     key: 'status',
-     name: '是否有效',
-   },{
-     key: 'classify',
-     name: '商品类型',
+     key:'gold',
+     name:'积分'
+   },
+   {
+     key:'role',
+     name:'角色'
+   },
+   {
+     key:'status',
+     name:'是否有效'
    }
  ];
  export  {

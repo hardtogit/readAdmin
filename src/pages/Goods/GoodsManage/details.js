@@ -52,8 +52,11 @@ class Index extends React.Component {
       attributelist.forEach((item)=>{
         obj[item.name]=[]
       });
+      console.log(obj)
       this.setState({
         attribute:obj
+      },()=>{
+        console.log(this.state)
       })
     }
   }
@@ -167,6 +170,7 @@ class Index extends React.Component {
   render() {
     const {form:{getFieldDecorator},goodsread={},classifylist=[],attributelist}=this.props;
     const {attribute,text}=this.state;
+    console.log('s' ,attribute)
     const columns=this.createAttributedFields(attribute);
     const dataSource=this.getTableData(attribute);
     const tableProps={
@@ -291,7 +295,7 @@ class Index extends React.Component {
                     {...lLayout}
                     label={item.name}
                   >
-                    <Checkbox.Group onChange={(checkedValues)=>this.handleChange(item.name,checkedValues)}>
+                    <Checkbox.Group onChange={(checkedValues)=>this.handleChange(item.name,checkedValues)} value={attribute[item.name]}>
                       {item.values.map((value)=><Checkbox key={value} value={value}>{value}</Checkbox>)}
                     </Checkbox.Group>
                   </FormItem>

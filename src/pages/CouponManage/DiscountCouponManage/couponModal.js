@@ -109,15 +109,32 @@ class Index extends React.Component{
             <FormItem
               {...layout}
               label="积分"
+              extra="用户购买立减券时赠送的积分"
             >
               {getFieldDecorator('gold', {
-                initialValue: couponread&&couponread.gold,
+              initialValue: couponread&&couponread.gold,
+              rules: [{
+                required: true,
+                message: '请输入积分'
+              }],
+            })(
+              <InputNumber style={{width:'100%'}} min={0} precision={0} />
+            )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              {...layout}
+              label="价格"
+            >
+              {getFieldDecorator('price', {
+                initialValue: couponread&&couponread.price,
                 rules: [{
                   required: true,
-                  message: '请输入兑换积分'
+                  message: '请输入价格'
                 }],
               })(
-                <InputNumber style={{width:'100%'}} min={0} precision={0} />
+                <InputNumber style={{width:'100%'}} min={0} precision={2} />
               )}
             </FormItem>
           </Col>

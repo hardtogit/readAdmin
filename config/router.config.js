@@ -82,7 +82,7 @@ export default [
           {
             path: '/power/accountManage',
             name: 'accountManage',
-            component: './CouponManage/DiscountCouponManage',
+            component: './Power/Admin',
             icon:'team'
           },
           {
@@ -98,6 +98,12 @@ export default [
             icon:'car'
           }
         ],
+      },
+      {
+        path: '/callCenter',
+        name: 'callCenter',
+        component: './CallCenter',
+        icon: 'trademark',
       },
       // {
       //   path: '/dashboard',

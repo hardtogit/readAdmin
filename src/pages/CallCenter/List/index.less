@@ -1,0 +1,53 @@
+:global{
+  .list {
+    ul{
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      padding: 12px 8px;
+      border-bottom: 1px solid #292C33;
+      cursor: pointer;
+      transition: background-color .1s;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.03);
+      }
+      &.active {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      display: flex;
+    }
+    .left{
+      flex: 30px 0;
+    }
+    .right{
+      flex: 1;
+      width: 152px;
+      .lastText{
+        font-size: 12px;
+        margin:-6px 0 0 4px;
+        .scale{
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          transform: scale(0.8);
+        }
+
+      }
+    }
+    .avatar, .name {
+      vertical-align: middle;
+    }
+    .avatar {
+      border-radius: 2px;
+    }
+    .name {
+      display: inline-block;
+      margin: -12px 0 0 12px;
+    }
+
+  }
+}
+

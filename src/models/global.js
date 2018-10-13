@@ -168,6 +168,58 @@ export default {
         case "freightdel":
           message.success('删除成功');
           break;
+          // admin
+        case 'adminlist':
+          yield put({
+            type:'adminManage/adminlist',
+            payload
+          });
+          break;
+        case "adminadd":
+          message.success('新增成功');
+          break;
+        case "adminread":
+          yield put({
+            type:'adminManage/adminread',
+            payload
+          });
+          break;
+        case "admindel":
+          message.success('删除成功');
+          break;
+        // IM
+        case "mailbox":
+          yield put({
+            type:'callCenterManage/peopleList',
+            payload
+          });
+          break;
+        case "chat_get":
+          yield put({
+            type:'callCenterManage/getPeopleList',
+            payload
+          });
+          yield put({
+            type:'callCenterManage/chatList',
+            payload
+          });
+          break;
+        case "chat_send":
+          yield put({
+            type:'callCenterManage/getChatList',
+            payload
+          });
+          break;
+        case "message_chat":
+          yield put({
+            type:'callCenterManage/getPeopleList',
+            payload
+          });
+          yield put({
+            type:'callCenterManage/getChatList',
+            payload
+          });
+          break;
         default:
           break
       }
