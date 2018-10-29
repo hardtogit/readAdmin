@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import AuthComponent from '@/components/AuthComponent';
 import { connect } from 'dva/index';
 import AttributeListModal from './attributeListModal'
 import {tableFields} from './fields';
@@ -46,21 +47,24 @@ class Index extends React.Component {
       width:240,
       render: (text, record) => (
         <div>
-          <Operation
-            disable={record.status === 'DISABLE'}
-            onClick={() =>{
+          <AuthComponent code="010204">
+            <Operation
+              disable={record.status === 'DISABLE'}
+              onClick={() =>{
               const {recordid}=record;
               this.setState({
                 visList:true,
                 id:recordid
               })
             }}
-          >属性列表
-          </Operation>
-          <span className="ant-divider" />
-          <Operation
-            disable={record.status === 'DISABLE'}
-            onClick={() =>{
+            >属性列表
+            </Operation>
+            <span className="ant-divider" />
+          </AuthComponent>
+          <AuthComponent code="010202">
+            <Operation
+              disable={record.status === 'DISABLE'}
+              onClick={() =>{
               const {recordid}=record;
               window.apiconn.send_obj({
                 obj:"admin",
@@ -72,12 +76,14 @@ class Index extends React.Component {
                 opType:'edit'
               })
             }}
-          >修改
-          </Operation>
-          <span className="ant-divider" />
-          <Operation
-            disable={record.id === -1}
-            onClick={() => {
+            >修改
+            </Operation>
+            <span className="ant-divider" />
+          </AuthComponent>
+          <AuthComponent code="010203">
+            <Operation
+              disable={record.id === -1}
+              onClick={() => {
               const {recordid}=record;
               Modal.confirm({
                 title:'确定删除该条数据？',
@@ -90,12 +96,10 @@ class Index extends React.Component {
                   getList(1,10);
                 }
               })
-
-
-
             }}
-          >删除
-          </Operation>
+            >删除
+            </Operation>
+          </AuthComponent>
         </div>)}];
     return createColumns(fields).enhance(extraFields).values()
 
@@ -153,7 +157,9 @@ class Index extends React.Component {
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
+          <AuthComponent code="010201">
+            <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
+          </AuthComponent>
           <p />
           <Table {...tableProps} />
           {visModal&& <ClassifyModal {...classifyModalProps} /> }

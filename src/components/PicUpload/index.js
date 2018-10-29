@@ -11,6 +11,7 @@ const defaultFileList = {
   name: '',
   status: 'done',
   isReturn: true,
+  type:'jpg',
   url: '',
 };
 const getAttachId = (url) => {
@@ -22,11 +23,11 @@ const getAttachId = (url) => {
 const handleList = (pic) => {
   const fileLists = [];
   if (Array.isArray(pic)) {
-    pic.forEach((url, uid) => {
-      fileLists.push({ ...defaultFileList, url, uid });
+    pic.forEach((fid) => {
+      fileLists.push({ ...defaultFileList,type:'jpg',url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid});
     });
   } else {
-    fileLists.push({ ...defaultFileList, url: pic });
+    fileLists.push({ ...defaultFileList,type:'jpg',url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic});
   }
   return fileLists;
 };
@@ -66,11 +67,11 @@ export default class Index extends React.Component {
     const fileLists = [];
     const { pic } = this.state;
     if (Array.isArray(pic)) {
-      pic.forEach((url, uid) => {
-        fileLists.push({ ...defaultFileList, url, attachId: getAttachId(url), uid });
+      pic.forEach((fid) => {
+        fileLists.push({ ...defaultFileList,type:'jpg',url:`http://116.62.164.251/cgi-bin/download.pl?fid=${fid}&proj=yyqq`, fid});
       });
     } else {
-      fileLists.push({ ...defaultFileList, url: pic, attachId: getAttachId(pic) });
+      fileLists.push({ ...defaultFileList,type:'jpg',url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic});
     }
   }
 
@@ -79,11 +80,11 @@ export default class Index extends React.Component {
     if (!looseEqual(pic, this.props.pic)) {
       if (pic) {
         if (Array.isArray(pic)) {
-          pic.forEach((url, uid) => {
-            fileLists.push({ ...defaultFileList, url, attachId: getAttachId(url), uid });
+          pic.forEach((fid) => {
+            fileLists.push({ ...defaultFileList, url:`http://116.62.164.251/cgi-bin/download.pl?fid=${fid}&proj=yyqq`, fid });
           });
         } else {
-          fileLists.push({ ...defaultFileList, url: pic, attachId: getAttachId(pic) });
+          fileLists.push({ ...defaultFileList,url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic});
         }
         this.setState({ fileLists });
         this.setState({ pic });
@@ -124,17 +125,30 @@ export default class Index extends React.Component {
   };
 
   formatImgData=(fileList)=>{
-    const formatData = [];
-    fileList.forEach((obj) => {
-      if (obj.isReturn) {
-        formatData.push({thumb:obj.thumb,fid:obj.fid });
-      }else if (obj.response && obj.response.fid) {
-        formatData.push({thumb:obj.response.thumb,fid:obj.response.fid })
-      }
+    const {pageType}=this.props;
+    let formatData='';
+    if(pageType){
+      fileList.forEach((obj) => {
+        if (obj.isReturn) {
+          formatData=obj.fid
+        }else if (obj.response && obj.response.fid) {
+          formatData=obj.response.fid
+        }
+      });
+    }else{
+       formatData = [];
+      fileList.forEach((obj) => {
+        if (obj.isReturn) {
+          formatData.push({fid:obj.fid,thumb:obj.thumb });
+        }else if (obj.response && obj.response.fid) {
+          formatData.push({fid:obj.response.fid,thumb:obj.response.thumb })
+        }
 
-    });
+      });
+    }
+
     return formatData;
-  }
+  };
 
   handleUploadChange(info) {
     console.log(info)

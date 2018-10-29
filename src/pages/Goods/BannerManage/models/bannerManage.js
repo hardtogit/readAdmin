@@ -1,42 +1,29 @@
 
 export default {
-  namespace: 'goodsManage',
+  namespace: 'bannerManage',
 
   state: {
-    goodslist:[],
-    classifylist:[],
-    goodsread:{},
+    bannerlist:[],
+    bannerread:{}
   },
 
   effects: {
-    * goodslist({payload},{put}){
+    * bannerlist({payload},{put}){
       yield put({
         type:'save',
-        payload:{goodslist:{total:payload.allpage,list:payload.info}}
+        payload:{bannerlist:payload.info,}
       })
     },
-    * goodsexport({payload},{put}){
-      yield put({
-        type:'save',
-        payload:{goodsexport:payload.info}
-      })
-    },
-
     *classifylist({payload},{put}){
       yield put({
         type:'save',
         payload:{classifylist:payload.info}
       })
     },
-    *goodsread({payload},{put}){
+    *bannerread({payload},{put}){
       yield put({
         type:'save',
-        payload:{goodsread:payload.info}
-      })
-    },
-    *cleargoodsexport({payload},{put}){
-      yield put({
-        type:'cleargoods',
+        payload:{bannerread:payload.info}
       })
     },
   },
@@ -48,12 +35,7 @@ export default {
         ...payload,
       };
     },
-    cleargoods(state){
-      return {
-        ... state,
-        goodsexport:[]
-      }
-    },
+
     clear() {
       return {
         visitData: [],

@@ -1,7 +1,7 @@
 export default [
   {
     id:'01',
-    title:'商品管理',
+    title:'运营管理',
     children:[
       {
         id:'0101',
@@ -19,10 +19,10 @@ export default [
             id:'010103',
             title:'删除',
           },
-          {
-            id:'010104',
-            title:'导入',
-          },
+          // {
+          //   id:'010104',
+          //   title:'导入',
+          // },
           {
             id:'010105',
             title:'导出',
@@ -44,6 +44,10 @@ export default [
           {
             id:'010203',
             title:'删除',
+          },
+          {
+            id:'010204',
+            title:'属性列表',
           }
 
         ]
@@ -51,6 +55,10 @@ export default [
       {
         id:'0103',
         title:'订单管理',
+      },
+      {
+        id:'0104',
+        title:'素材管理',
       }
     ]
   },
@@ -79,7 +87,7 @@ export default [
       },
       {
         id:'0202',
-        title:'积分卡管理',
+        title:'积分卡模板管理',
         children:[
           {
             id:'020201',
@@ -91,6 +99,21 @@ export default [
           },
           {
             id:'020203',
+            title:'删除',
+          }
+
+        ]
+      },
+      {
+        id:'0203',
+        title:'积分卡管理',
+        children:[
+          {
+            id:'020301',
+            title:'新增',
+          },
+          {
+            id:'020302',
             title:'删除',
           }
 
@@ -118,6 +141,10 @@ export default [
           {
             id:'030103',
             title:'删除',
+          },
+          {
+            id:'030104',
+            title:'导出',
           }
 
         ]
@@ -140,7 +167,24 @@ export default [
           }
 
         ]
+      },{
+        id:'0303',
+        title:'邮费管理',
+        children:[
+          {
+            id:'030301',
+            title:'新增',
+          },
+          {
+            id:'030302',
+            title:'修改',
+          },
+        ]
       }
     ]
+  },
+  {
+    id:'04',
+    title:'客服中心'
   }
 ]

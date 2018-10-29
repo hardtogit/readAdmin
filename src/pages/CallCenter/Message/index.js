@@ -66,7 +66,7 @@ class Index extends React.Component{
                   <div className={classNames(["textMsg",{'image':chat.mtype==='image'}])}>
                     {chat.mtype==='image'?
                       <img
-                        src={`http://116.62.164.251/cgi-bin/download.pl?fid=${chat.content.thumb}&proj=yyqq`}
+                        src={`http://116.62.164.251/cgi-bin/download.pl?fid=${chat.content.fid}&proj=yyqq`}
                         style={{maxWidth:'308px'}}
                         alt=""
                       />

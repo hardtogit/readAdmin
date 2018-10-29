@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import AuthComponent from '@/components/AuthComponent';
 import { connect } from 'dva/index';
 import {tableFields} from './fields';
 import Operation from '@/components/Operation/Operation';
@@ -41,9 +42,10 @@ class Index extends React.Component {
       name: '操作',
       render: (text, record) => (
         <div>
-          <Operation
-            disable={record.status === 'DISABLE'}
-            onClick={() =>{
+          <AuthComponent code="030202">
+            <Operation
+              disable={record.status === 'DISABLE'}
+              onClick={() =>{
               const {_id}=record;
               window.apiconn.send_obj({
                 obj:"admin",
@@ -55,12 +57,14 @@ class Index extends React.Component {
                 opType:'edit'
               })
             }}
-          >修改
-          </Operation>
-          <span className="ant-divider" />
-          <Operation
-            disable={record.id === -1}
-            onClick={() => {
+            >修改
+            </Operation>
+            <span className="ant-divider" />
+          </AuthComponent>
+          <AuthComponent code="030203">
+            <Operation
+              disable={record.id === -1}
+              onClick={() => {
               const {_id}=record;
               Modal.confirm({
                 title:'确定删除该条数据？',
@@ -73,12 +77,10 @@ class Index extends React.Component {
                   getList(1,10);
                 }
               })
-
-
-
             }}
-          >删除
-          </Operation>
+            >删除
+            </Operation>
+          </AuthComponent>
         </div>)}];
     return createColumns(fields).enhance(extraFields).values()
 
@@ -127,7 +129,9 @@ class Index extends React.Component {
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
+          <AuthComponent code="030201">
+            <Button type='primary' onClick={()=>this.setState({visModal:true,opType:'add'})}>新增</Button>
+          </AuthComponent>
           <p />
           <Table {...tableProps} />
           {visModal&& <RoleModal {...roleModalProps} /> }

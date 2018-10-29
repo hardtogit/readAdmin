@@ -22,30 +22,42 @@ export default [
         path: '/goods',
         name: 'goods',
         icon: 'database',
+        code:'01',
         routes: [
           {
             path: '/goods/manage',
             name: 'goodsManage',
             icon:'shop',
             component: './Goods/GoodsManage',
+            code:'0101'
           },
           {
-            path: '/goods/detail',
+            path: '/goods/detail/:id?',
             name: 'goodsDetail',
             icon:'shop',
             component: './Goods/GoodsManage/details',
+            hideInMenu:true
           },
           {
             path: '/goods/classifyManage',
             name: 'typeManage',
             icon:'cluster',
             component: './Goods/ClassifyManage',
+            code:'0102'
           },
           {
             path: '/goods/orderManage',
             name: 'orderManage',
             icon:'shopping',
             component: './OrderManage',
+            code:'0103'
+          },
+          {
+            path: '/goods/bannerManage',
+            name: 'bannerManage',
+            icon:'picture',
+            component: './Goods/BannerManage',
+            code:'0104'
           }
         ],
       },
@@ -53,24 +65,28 @@ export default [
         path: '/coupon',
         name: 'coupon',
         icon: 'credit-card',
+        code: '02',
         routes: [
           {
             path: '/coupon/discountCouponManage',
             name: 'discountCouponManage',
             component: './CouponManage/DiscountCouponManage',
-            icon:'printer'
+            icon:'printer',
+            code:'0201'
           },
           {
             path: '/coupon/integralCouponManage',
             name: 'integralCouponManage',
             component: './CouponManage/IntegralCouponManage',
-            icon:'border'
+            icon:'border',
+            code:'0202'
           },
           {
             path: '/coupon/goldManage',
             name: 'goldManage',
             component: './CouponManage/GoldManage',
-            icon:'gold'
+            icon:'gold',
+            code:'0203'
           }
         ],
       },
@@ -78,24 +94,28 @@ export default [
         path: '/power',
         name: 'power',
         icon: 'setting',
+        code:'03',
         routes: [
           {
             path: '/power/accountManage',
             name: 'accountManage',
             component: './Power/Admin',
-            icon:'team'
+            icon:'team',
+            code:'0301'
           },
           {
             path: '/power/roleManage',
             name: 'roleManage',
             component: './Power/RoleManage',
-            icon:'solution'
+            icon:'solution',
+            code:'0302'
           },
           {
             path: '/power/freightManage',
             name: 'freightManage',
             component: './Power/FreightManage',
-            icon:'car'
+            icon:'car',
+            code:'0303'
           }
         ],
       },
@@ -104,6 +124,7 @@ export default [
         name: 'callCenter',
         component: './CallCenter',
         icon: 'trademark',
+        code:'04'
       },
       // {
       //   path: '/dashboard',

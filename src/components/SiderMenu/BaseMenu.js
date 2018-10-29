@@ -3,6 +3,7 @@ import { Menu, Icon } from 'antd';
 import Link from 'umi/link';
 import { formatMessage } from 'umi/locale';
 import pathToRegexp from 'path-to-regexp';
+import anthMenus  from '../../../config/menus.config'
 import { urlToList } from '../_utils/pathTools';
 import styles from './index.less';
 
@@ -55,8 +56,20 @@ export default class BaseMenu extends PureComponent {
     if (!menusData) {
       return [];
     }
+    const menuObj={};
+    const treeToObj=(data)=>{
+         data.forEach((item)=>{
+           menuObj[item.title]=item.id;
+           if(item.children){
+             treeToObj(item.children)
+           }
+         })
+    };
+    treeToObj(anthMenus);
+    const right=JSON.parse(sessionStorage.getItem('right'));
+    console.log(menusData)
     return menusData
-      .filter(item => item.name && !item.hideInMenu)
+      .filter(item => item.name && !item.hideInMenu&&(right&&right.indexOf(item.code)!==-1))
       .map(item => {
         // make dom
         const ItemDom = this.getSubMenuOrItem(item, parent);

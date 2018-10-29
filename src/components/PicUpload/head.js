@@ -2,7 +2,7 @@
  * 图片上传组建
  */
 import React from 'react';
-import { Upload, Button, Icon, message } from 'antd';
+import { Upload, Icon, message } from 'antd';
 import { looseEqual } from '../../utils/share';
 import previewImg from '../ImgPreview';
 
@@ -22,11 +22,11 @@ const getAttachId = (url) => {
 const handleList = (pic) => {
   const fileLists = [];
   if (Array.isArray(pic)) {
-    pic.forEach((url, uid) => {
-      fileLists.push({ ...defaultFileList, url, uid });
+    pic.forEach((fid) => {
+      fileLists.push({ ...defaultFileList,type:'jpg', url:`http://116.62.164.251/cgi-bin/download.pl?fid=${fid}&proj=yyqq`, fid});
     });
   } else {
-    fileLists.push({ ...defaultFileList, url: pic });
+    fileLists.push({ ...defaultFileList,type:'jpg',url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic});
   }
   return fileLists;
 };
@@ -53,7 +53,6 @@ export default class Index extends React.Component {
       fileLists = handleList(pic);
     }
     this.state = {
-      pic,
       fileLists,
       uploading: false,
       previewImage: ''
@@ -64,13 +63,13 @@ export default class Index extends React.Component {
 
   componentDidMount() {
     const fileLists = [];
-    const { pic } = this.state;
+    const { pic } = this.props;
     if (Array.isArray(pic)) {
-      pic.forEach((url, uid) => {
-        fileLists.push({ ...defaultFileList, url, attachId: getAttachId(url), uid });
+      pic.forEach((fid) => {
+        fileLists.push({ ...defaultFileList,type:'jpg', url:`http://116.62.164.251/cgi-bin/download.pl?fid=${fid}&proj=yyqq`, fid});
       });
     } else {
-      fileLists.push({ ...defaultFileList, url: pic, attachId: getAttachId(pic) });
+      fileLists.push({ ...defaultFileList,type:'jpg', url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic})
     }
   }
 
@@ -79,17 +78,15 @@ export default class Index extends React.Component {
     if (!looseEqual(pic, this.props.pic)) {
       if (pic) {
         if (Array.isArray(pic)) {
-          pic.forEach((url, uid) => {
-            fileLists.push({ ...defaultFileList, url, attachId: getAttachId(url), uid });
+          pic.forEach((fid) => {
+            fileLists.push({ ...defaultFileList,type:'jpg', url:`http://116.62.164.251/cgi-bin/download.pl?fid=${fid}&proj=yyqq`, fid})
           });
         } else {
-          fileLists.push({ ...defaultFileList, url: pic, attachId: getAttachId(pic) });
+          fileLists.push({ ...defaultFileList,type:'jpg', url:`http://116.62.164.251/cgi-bin/download.pl?fid=${pic}&proj=yyqq`, fid:pic})
         }
         this.setState({ fileLists });
-        this.setState({ pic });
       } else {
         this.setState({
-          pic: '',
           fileLists: []
         });
       }
@@ -112,9 +109,6 @@ export default class Index extends React.Component {
   }
 
   beforeUpload = (file) => {
-    this.setState({
-      fileLists:[]
-    });
     const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
     if (!isJPG) {
       message.error('文件格式须为jpg、jpeg、png');
@@ -130,27 +124,21 @@ export default class Index extends React.Component {
     const formatData = [];
     fileList.forEach((obj) => {
       if (obj.isReturn) {
-        formatData.push({thumb:obj.thumb,fid:obj.fid });
+        formatData.push({fid:obj.fid });
       }else if (obj.response && obj.response.fid) {
-        formatData.push({thumb:obj.response.thumb,fid:obj.response.fid,type:obj.response.type})
+        formatData.push({fid:obj.response.fid })
       }
 
     });
     return formatData;
-  }
+  };
 
   handleUploadChange(info) {
+    console.log(info)
     const { fileLists } = this.state;
     const { onChange, getChange } = this.props;
     const { fileList, file } = info;
     this.setState({ fileLists: fileList });
-    // const content = this.formatImgData(fileList);
-    // if (onChange&&content) {
-    //   onChange(content);
-    // }
-    // if (getChange) {
-    //   getChange(content);
-    // }
     if (file.status === 'done') {
       if (file.response.status === 'ERROR') {
         message.error(file.response.errorMsg || '图片上传失败');
@@ -158,14 +146,13 @@ export default class Index extends React.Component {
         const newFileList = fileLists.slice();
         newFileList.splice(index, 1);
         this.setState({ fileLists: newFileList });
-      }else{
-        const content = this.formatImgData(fileList);
-        if (onChange&&content) {
-          onChange(content);
-        }
-        if (getChange) {
-          getChange(content);
-        }
+      }
+      const content = this.formatImgData(fileList);
+      if (onChange&&content) {
+        onChange(content[0].fid);
+      }
+      if (getChange) {
+        getChange(content);
       }
     }
     if (file.status === 'error') {
@@ -180,10 +167,10 @@ export default class Index extends React.Component {
   render() {
     const { uploadButton = uploadBtn, picLength, listType } = this.props;
     const { fileLists = [] } = this.state;
+    console.log(fileLists)
     return (
       <div>
         <Upload
-          {...this.props}
           name="local_file"
           action='http://116.62.164.251/cgi-bin/upload.pl'
           fileList={fileLists}
@@ -196,7 +183,7 @@ export default class Index extends React.Component {
           onChange={this.handleUploadChange}
           headers={{ 'X-Requested-With': null , withCredentials: null}}
         >
-          { uploadButton}
+          {fileLists.length >= picLength ? null : uploadButton}
         </Upload>
       </div>
     );

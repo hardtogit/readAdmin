@@ -6,6 +6,7 @@ import { connect } from 'dva/index';
 import TableUtils from '../../../utils/table';
 import Editor from '../../../components/Editor'
 import EditorCopy from '../../../components/EditorCopy'
+import { looseEqual } from '../../../utils/share';
 
 let baseArray=[];
 const layout = {
@@ -14,15 +15,16 @@ const layout = {
 };
 const lLayout= {
   labelCol: { span:2 },
-  wrapperCol: { span: 12 },
+  wrapperCol: { span: 16 },
 };
-const {TextArea} =Input
+const {TextArea} =Input;
 const {createColumns}=TableUtils;
-const {Option}=Select
+const {Option}=Select;
 const FormItem=Form.Item;
 @connect(({ goodsDetail }) => ({
   classifylist:goodsDetail.classifylist,
-  attributelist:goodsDetail.attributelist
+  attributelist:goodsDetail.attributelist,
+  goodsread:goodsDetail.goodsread
 }))
 @Form.create()
 class Index extends React.Component {
@@ -32,11 +34,21 @@ class Index extends React.Component {
       attribute:{
 
       },
-      text:''
+      text:'',
+      init:false
     };
+    this.dataSource=[]
   }
 
   componentDidMount(){
+    const {params}=this.props.match;
+    if(params.id){
+      window.apiconn.send_obj({
+        obj: "admin",
+        act: "goodsread",
+        id:params.id
+      });
+    }
     window.apiconn.send_obj({
       obj: "admin",
       act: "classifylist",
@@ -46,8 +58,8 @@ class Index extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const {attributelist}=nextProps;
-    if(attributelist.length){
+    const {attributelist,goodsread}=nextProps;
+    if(attributelist.length&&!looseEqual(attributelist, this.props.attributelist)&&this.state.init){
       const obj={};
       attributelist.forEach((item)=>{
         obj[item.name]=[]
@@ -59,9 +71,37 @@ class Index extends React.Component {
         console.log(this.state)
       })
     }
+    if(goodsread&&!looseEqual(goodsread,this.props.goodsread) ){
+      window.apiconn.send_obj({
+        obj: "admin",
+        act: "attributelist",
+        page_num: 1,
+        page_size: 10000,
+        recordid:goodsread.classifyid
+      });
+      const attribute={};
+      goodsread.attributes.forEach((item,i)=>{
+        console.log([item[`attr${i+1}`]])
+        attribute[item[`attr${i+1}`]]=item.type;
+      });
+      this.setState({
+        attribute
+      });
+      console.log('aaa',attribute)
+    }
+  }
+
+  componentWillUnmount(){
+    const {dispatch}=this.props;
+    dispatch({
+      type:'goodsDetail/clearState'
+    })
   }
 
   handleSelect=(value,option)=>{
+    this.setState({
+      init:true
+    });
     window.apiconn.send_obj({
       obj: "admin",
       act: "attributelist",
@@ -89,6 +129,7 @@ class Index extends React.Component {
 
   createAttributedFields=(attribute)=>{
     const fields=[];
+    const {form:{getFieldDecorator},goodsread,match:{params}}=this.props;
     Object.keys(attribute).forEach((key)=>{
       fields.push({
         key,
@@ -96,29 +137,78 @@ class Index extends React.Component {
       })
     });
     const extraFields = [{
-      key: 'integral',
+      key: 'gold',
       name: '积分',
       width:120,
-      render: () => (
-        <InputNumber style={{width:'100px'}} min={0} parser={0} defaultValue={0} />)},
+      render: (a,b,c) => (
+        <span>
+          {getFieldDecorator(`gold[${c}]`, {
+              initialValue: params.id&&goodsread.datas[c].gold||0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={0} />)}
+        </span>
+      )},
       {
         key: 'mprice',
         name: '市场价',
         width:120,
-        render: () => (
-          <InputNumber style={{width:'100px'}} min={0} parser={2} defaultValue={0} />)},
+        render: (a,b,c) => (
+          <span>
+            {getFieldDecorator(`mprice[${c}]`, {
+              initialValue:params.id&&goodsread.datas[c].mprice|| 0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={2} />)}
+          </span>
+        )},
       {
         key: 'rprice',
         name: '实时价',
         width:120,
-        render: () => (
-          <InputNumber style={{width:'100px'}} min={0} parser={2} defaultValue={0} />)},
+        render: (a,b,c) => (
+          <span>
+            {getFieldDecorator(`rprice[${c}]`, {
+              initialValue:params.id&&goodsread.datas[c].rprice|| 0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={2} />)}
+          </span>
+    )},
+
+      {
+        key: 'freight',
+        name: '重量',
+        width:120,
+        render: (a,b,c) => (
+          <span>
+            {getFieldDecorator(`freight[${c}]`, {
+              initialValue: params.id&&goodsread.datas[c].freight||0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={0} />)}
+          </span>
+        )},
+      {
+        key: 'sale',
+        name: '销量',
+        width:120,
+        render: (a,b,c) => (
+          <span>
+            {getFieldDecorator(`sale[${c}]`, {
+              initialValue: params.id&&goodsread.datas[c].sale||0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={0} />)}
+          </span>
+        )},
       {
         key: 'store',
         name: '库存',
         width:120,
-        render: () => (
-          <InputNumber style={{width:'100px'}} min={0} parser={0} defaultValue={0} />)}];
+        render: (a,b,c) => (
+          <span>
+            {getFieldDecorator(`store[${c}]`, {
+              initialValue: params.id&&goodsread.datas[c].store||0,
+            })(
+              <InputNumber style={{width:'100px'}} min={0} precision={0} />)}
+          </span>
+        )}];
     return createColumns(fields).enhance(extraFields).values()
   };
 
@@ -158,10 +248,62 @@ class Index extends React.Component {
   };
 
   handleSubmit=()=>{
-    const {form}=this.props;
+    const {form,match:{params}}=this.props;
+    const {attribute}=this.state;
+    const copyAttribute=[];
+    const datas=[]
+    Object.keys(attribute).forEach((key,i)=>{
+      copyAttribute.push({
+        [`attr${i+1}`]:key,
+        order:i+1,
+        type:attribute[key],
+      })
+    });
     form.validateFields((error,values)=>{
       if(!error){
-        console.log(values)
+        this.dataSource.forEach((item,k)=>{
+          const obj={};
+          Object.keys(item).forEach((key,i)=>{
+            obj[`attr${i+1}`]={
+              type:key,
+              value:item[key]
+            };
+          });
+          obj.gold=values.gold[k];
+          obj.rprice=values.rprice[k];
+          obj.store=values.store[k];
+          obj.mprice=values.mprice[k];
+          obj.sale=values.sale[k];
+          obj.freight=values.freight[k]
+          datas.push(obj)
+        });
+        delete values.gold;
+        delete values.rprice;
+        delete values.store;
+        delete values.mprice;
+        delete values.sale;
+        delete values.freight;
+        values.datas=datas;
+        values.attributes=copyAttribute;
+
+        const arr=values.classify.split(',');
+        values.classify=arr[0];
+        values.classifyid=arr[1];
+        console.log('values' , values)
+        if(params.id){
+          window.apiconn.send_obj({
+            obj: "admin",
+            act: "goodsmodi",
+            id:params.id,
+            ...values
+          });
+        }else{
+          window.apiconn.send_obj({
+            obj: "admin",
+            act: "goodsrel",
+            ...values
+          });
+        }
       }
 
     })
@@ -169,10 +311,11 @@ class Index extends React.Component {
 
   render() {
     const {form:{getFieldDecorator},goodsread={},classifylist=[],attributelist}=this.props;
-    const {attribute,text}=this.state;
-    console.log('s' ,attribute)
+    const {attribute}=this.state;
+    console.log(attribute)
     const columns=this.createAttributedFields(attribute);
     const dataSource=this.getTableData(attribute);
+    this.dataSource=dataSource;
     const tableProps={
         columns,
       bordered:true,
@@ -187,10 +330,26 @@ class Index extends React.Component {
             <Col span={24}>
               <FormItem
                 {...layout}
+                label="商品标识"
+              >
+                {getFieldDecorator('goodsflag', {
+                  initialValue: goodsread&&goodsread.goodsflag,
+                  rules: [{
+                    required: true,
+                    message: '商品标识'
+                  }],
+                })(
+                  <Input  />
+                )}
+              </FormItem>
+            </Col>
+            <Col span={24}>
+              <FormItem
+                {...layout}
                 label="名称"
               >
-                {getFieldDecorator('goodsName', {
-                  initialValue: goodsread&&goodsread.goodsName,
+                {getFieldDecorator('goodsname', {
+                  initialValue: goodsread&&goodsread.goodsname,
                   rules: [{
                     required: true,
                     message: '名称必须填写'
@@ -212,7 +371,15 @@ class Index extends React.Component {
                     message: '图片必须上传'
                   }],
                 })(
-                  <PicUpload picLength={3} />
+                  <PicUpload
+                    picLength={3}
+                    pic={goodsread.picture&&goodsread.picture.reduce((prev, next) => (
+                      [
+                        ...prev,
+                        next.fid
+                      ]
+                    ), [])}
+                  />
                 )}
               </FormItem>
             </Col>
@@ -222,7 +389,7 @@ class Index extends React.Component {
                 label="是否为兑换商品"
               >
                 {getFieldDecorator('convert', {
-                  initialValue: goodsread&&goodsread.goodsName,
+                  initialValue: goodsread&&goodsread.convert,
                   rules: [{
                     required: true,
                     message: '该属性必须选择'
@@ -282,8 +449,8 @@ class Index extends React.Component {
                     message: '分类必须选择'
                   }],
                 })(
-                  <Select onSelect={this.handleSelect}>
-                    {classifylist.map((item)=><Option key={item.recordid} value={item.name}>{item.name}</Option>)}
+                  <Select onSelect={this.handleSelect} onChange={this.handleSelect}>
+                    {classifylist.map((item)=><Option key={item.recordid} value={`${item.name},${item.recordid}`}>{item.name}</Option>)}
                   </Select>
                 )}
               </FormItem>

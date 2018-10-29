@@ -1,4 +1,5 @@
 import { queryNotices } from '@/services/api';
+import {routerRedux}  from 'dva/router'
 import {message} from 'antd'
 
 export default {
@@ -11,8 +12,60 @@ export default {
 
   effects: {
     *onResponse({ payload }, { put }){
-      console.log(payload);
       switch (payload.act) {
+        case "login":
+          sessionStorage.setItem('right',JSON.stringify(payload.info.right));
+          break;
+        case "goodslist":
+          yield put({
+            type:'goodsManage/goodslist',
+            payload
+          });
+        break;
+        case "goodsrel":
+          message.success('新增成功');
+          yield put(routerRedux.push('/goods/manage'))
+          break;
+        case "goodsmodi":
+          message.success('修改成功');
+          yield put(routerRedux.push('/goods/manage'))
+          break;
+        case "goodsdel":
+          message.success('删除成功');
+           break;
+        case "goodsread":
+          yield put({
+            type:'goodsDetail/goodsread',
+            payload
+          });
+          break;
+        case "goodsexport":
+          yield put({
+            type:'goodsManage/goodsexport',
+            payload
+          });
+          break;
+        case "bannerlist":
+          yield put({
+            type:'bannerManage/bannerlist',
+            payload
+          });
+          break;
+        case "banneradd":
+          message.success('新增成功');
+          break;
+        case "bannermodi":
+          message.success('修改成功');
+          break;
+        case "bannerdel":
+          message.success('删除成功');
+          break;
+        case "bannerread":
+          yield put({
+            type:'bannerManage/bannerread',
+            payload
+          });
+          break;
         case "classifylist":
           yield put({
           type:'discountCouponManage/classifylist',
@@ -24,6 +77,10 @@ export default {
           });
           yield put({
             type:'goodsDetail/classifylist',
+            payload
+          });
+          yield put({
+            type:'goodsManage/classifylist',
             payload
           });
           break;
@@ -95,6 +152,13 @@ export default {
             payload
           });
           break;
+        case 'roleselectlist':
+          yield put({
+            type:'adminManage/rolelist',
+            payload
+          });
+          break;
+
         case "roleadd":
           message.success('角色新增成功');
           break;
@@ -175,6 +239,9 @@ export default {
             payload
           });
           break;
+        case 'adminmodi':
+          message.success('修改成功');
+          break;
         case "adminadd":
           message.success('新增成功');
           break;
@@ -184,9 +251,16 @@ export default {
             payload
           });
           break;
-        case "admindel":
+        case "adminexport":
+          yield put({
+            type:'adminManage/adminexport',
+            payload
+          });
+          break;
+        case "admindelete":
           message.success('删除成功');
           break;
+
         // IM
         case "mailbox":
           yield put({

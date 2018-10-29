@@ -67,7 +67,7 @@ export default class GlobalHeaderRight extends PureComponent {
             <Avatar
               size="small"
               className={styles.avatar}
-              src={currentUser.avatar}
+              src={`http://116.62.164.251/cgi-bin/download.pl?fid=${ JSON.parse(sessionStorage.getItem('userObj'))&&JSON.parse(sessionStorage.getItem('userObj')).headFid}&proj=yyqq`}
               alt="avatar"
             />
             <span className={styles.name}>{sessionStorage.getItem('credential_data')&&

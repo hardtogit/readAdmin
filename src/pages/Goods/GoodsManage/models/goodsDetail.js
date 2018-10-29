@@ -27,6 +27,12 @@ export default {
         payload:{goodsread:payload.info}
       })
     },
+    *clearState({payload},{put}){
+      yield put({
+        type:'clear',
+        payload:''
+      })
+    },
   },
 
   reducers: {
@@ -39,16 +45,9 @@ export default {
 
     clear() {
       return {
-        visitData: [],
-        visitData2: [],
-        salesData: [],
-        searchData: [],
-        offlineData: [],
-        offlineChartData: [],
-        salesTypeData: [],
-        salesTypeDataOnline: [],
-        salesTypeDataOffline: [],
-        radarData: [],
+        classifylist:[],
+        goodsread:{},
+        attributelist:[]
       };
     },
   },

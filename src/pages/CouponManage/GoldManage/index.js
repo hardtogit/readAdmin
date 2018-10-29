@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Card,Button,Modal} from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import AuthComponent from '@/components/AuthComponent';
 import { connect } from 'dva/index';
 import {tableFields} from './fields';
 import Operation from '@/components/Operation/Operation';
@@ -52,9 +53,10 @@ class Index extends React.Component {
       name: '操作',
       render: (text, record) => (
         <div>
-          <Operation
-            disable={record.id === -1}
-            onClick={() => {
+          <AuthComponent code="020302">
+            <Operation
+              disable={record.id === -1}
+              onClick={() => {
               const {_id}=record;
               Modal.confirm({
                 title:'确定删除该条数据？',
@@ -68,8 +70,9 @@ class Index extends React.Component {
                 }
               })
             }}
-          >删除
-          </Operation>
+            >删除
+            </Operation>
+          </AuthComponent>
         </div>)}];
     return createColumns(fields).enhance(extraFields).values()
 
@@ -123,7 +126,9 @@ class Index extends React.Component {
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <Button type='primary' onClick={()=>this.setState({visModal:true})}>新增</Button>
+          <AuthComponent code="020301">
+            <Button type='primary' onClick={()=>this.setState({visModal:true})}>新增</Button>
+          </AuthComponent>
           <p />
           <Table {...tableProps} />
           {visModal&& <CouponModal {...couponModalProps} /> }

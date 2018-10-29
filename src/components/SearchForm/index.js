@@ -39,7 +39,7 @@ const transformSearch = (search, { fields }) => {
   });
 
   // 重置页码为1
-  return { ...tmpSearch, pn: 1 };
+  return { ...tmpSearch};
 };
 
 /**
@@ -139,10 +139,19 @@ class SearchForm extends React.Component {
           </Col>
         ))}
         <Col {...itemLayout.itemCol}>
-          <div className={styles.btns}>
-            <Button type="primary" onClick={() => this.handleSearch(search)}>搜索</Button>
-            <Button onClick={this.handleReset}>重置</Button>
-          </div>
+          <FormItem
+            className="h-form-item"
+            label=' '
+            colon={false}
+            labelCol={itemLayout.labelCol}
+            wrapperCol={itemLayout.wrapperCol}
+          >
+            <div className={styles.btns}>
+              <Button type="primary" onClick={() => this.handleSearch(search)}>搜索</Button>
+              <Button onClick={this.handleReset}>重置</Button>
+            </div>
+          </FormItem>
+
         </Col>
       </Row>
     );

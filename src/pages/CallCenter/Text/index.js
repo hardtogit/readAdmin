@@ -55,7 +55,6 @@ class Index extends React.Component{
 
   handleGetChange=(file)=>{
     const {fromId}=this.props;
-    file[0].type='jpg/png';
     if(fromId){
       window.apiconn.send_obj({
         obj: "message",

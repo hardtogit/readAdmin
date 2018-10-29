@@ -4,14 +4,21 @@ export default {
 
   state: {
     adminlist:[],
-    adminread:{}
+    adminread:{},
+    rolelist:[]
   },
 
   effects: {
     * adminlist({payload},{put}){
       yield put({
         type:'save',
-        payload:{adminlist:payload.info,}
+        payload:{adminlist:{total:payload.allpage,list:payload.info} }
+      })
+    },
+    *rolelist({payload},{put}){
+      yield put({
+        type:'save',
+        payload:{rolelist:payload.info,}
       })
     },
     *classifylist({payload},{put}){
@@ -20,12 +27,24 @@ export default {
         payload:{classifylist:payload.info}
       })
     },
+    *adminexport({payload},{put}){
+      yield put({
+        type:'save',
+        payload:{adminexport:payload.info}
+      })
+    },
     *adminread({payload},{put}){
       yield put({
         type:'save',
         payload:{adminread:payload.info}
       })
     },
+    *cleargoodsexport({payload},{put}){
+      yield put({
+        type:'cleargoods',
+      })
+    },
+
   },
 
   reducers: {
@@ -35,7 +54,12 @@ export default {
         ...payload,
       };
     },
-
+    cleargoods(state){
+      return {
+        ... state,
+        adminexport:[]
+      }
+    },
     clear() {
       return {
         visitData: [],

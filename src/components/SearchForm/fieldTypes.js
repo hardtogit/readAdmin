@@ -24,6 +24,7 @@ import Type from '../../utils/type';
 
 const { MonthPicker, RangePicker } = DatePicker;
 const { TextArea } = Input;
+const {Option}=Select;
 const { Group: CheckboxGroup } = Checkbox;
 const { Group: RadioGroup } = Radio;
 
@@ -106,10 +107,11 @@ const fieldTypes = {
       <Select
         style={{ width: '100%' }}
         allowClear
-        options={options}
         placeholder={tmpPlaceholder}
         {...inputProps}
-      />
+      >
+        {options.map((option)=><Option value={option.value}>{option.label}</Option>)}
+      </Select>
     );
   },
   boolean: ({ inputProps }) => <Checkbox {...inputProps} />,
