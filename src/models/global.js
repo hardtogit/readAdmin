@@ -295,7 +295,22 @@ export default {
           });
           break;
         default:
-          break
+          break;
+        case 'shoppinglist':
+          yield put({
+            type:'shoppingManage/shoppinglist',
+            payload
+          });
+          break;
+        case 'carsend':
+          window.apiconn.send_obj({
+            obj: "admin",
+            act: "shoppinglist",
+            page_num: 0,
+            page_size: 10000,
+            content:'全部'
+          });
+          break;
       }
     },
     *fetchNotices(_, { call, put }) {

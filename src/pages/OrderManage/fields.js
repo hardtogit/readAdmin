@@ -1,38 +1,44 @@
  const  searchFields=[
   {
-    key: 'name', // 字段key
-    name: '名称', // 字段name
-    type: 'text', // 字段类型支持如下类型: date|datetime|datetimeRange|enum|boolean|number|textarea|text
-    meta: {
-      min: 0,
-      max: 100,
-      rows: 12
-    },
-    required: true
+    key: 'content', // 字段key
+    name: '状态', // 字段name
+    enums: [
+      { label: '全部', value: '全部' },
+      { label: '待付款', value: '待付款' },
+      { label: '待发货', value: '待发货'},
+      { label: '待收货', value: '待收货'},
+      { label: '待评价', value: '待评价'},
+      { label: '已完成', value: '已完成'},
+    ]
   }
 ];
  const  tableFields=[
    {
-     key: 'imgUrl',
-     name:'缩略图'
+     key: 'goodsname',
+     name:'商品名称'
    },
    {
-     key: 'name',
-     name: '书名',
+     key:'guige',
+     name:'规格'
    },
    {
-     key: 'name',
-     name: '名师',
+     key:'name',
+     name:'购买人'
    },
    {
-     key: 'name',
-     name: '课程',
+     key:'phone',
+     name:'手机号'
    },
    {
-     key: 'name',
-     name: '适读',
-   },{
-     key: 'name',
+     key:'address',
+     name:'地址'
+   },
+   {
+     key: 'time',
+     name: '时间',
+   },
+   {
+     key: 'status',
      name: '状态',
    }
  ];
